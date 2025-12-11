@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Github, ChevronDown, ChevronUp, FileText, ExternalLink } from "lucide-react";
+import { Github, ChevronDown, ChevronUp, FileText, ExternalLink, X } from "lucide-react";
 import { useState, useEffect, useRef, ReactNode } from "react";
 import { siAirplayvideo, siApple, siGoogleplay, siYoutube } from "simple-icons";
 
@@ -37,6 +37,59 @@ const renderIcon = (icon: IconType): ReactNode => {
   return <IconComponent className="w-4 h-4 mr-2" />;
 };
 
+const getYoutubeEmbedUrl = (url: string): string | null => {
+  const youtubeRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?(.+)/;
+  const match = url.match(youtubeRegex);
+  return match ? `https://www.youtube.com/embed/${match[1]}` : null;
+};
+
+const VideoModal = ({ videoUrl, projectTitle, onClose }: { videoUrl: string; projectTitle: string; onClose: () => void }) => {
+  const embedUrl = getYoutubeEmbedUrl(videoUrl);
+
+  if (!embedUrl) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4 backdrop-blur-sm" onClick={onClose}>
+      <div 
+        className="bg-background rounded-xl shadow-2xl max-w-4xl w-full relative border-2 border-primary/40 overflow-hidden"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between px-6 py-4 bg-gradient-to-r from-primary/5 to-transparent">
+          <h3 className="text-lg font-semibold text-foreground">{projectTitle}</h3>
+          <button
+            onClick={onClose}
+            className="p-2 hover:bg-primary/10 rounded-lg transition-colors text-muted-foreground hover:text-primary"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        {/* Video Container */}
+        <div className="aspect-video bg-black/90 m-4 rounded-lg overflow-hidden border border-primary/20">
+          <iframe
+            width="100%"
+            height="100%"
+            src={embedUrl}
+            title={projectTitle}
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            className="w-full h-full"
+          />
+        </div>
+
+        {/* Footer */}
+        <div className="px-6 py-4 bg-gradient-to-r from-transparent to-primary/5 flex justify-end gap-3">
+          <Button variant="outline" size="sm" onClick={onClose}>
+            Close
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const Projects = () => {
   const [expandedProjects, setExpandedProjects] = useState<Set<number>>(new Set());
   const [overflowingProjects, setOverflowingProjects] = useState<Set<number>>(new Set());
@@ -44,6 +97,8 @@ const Projects = () => {
     Map<number, { collapsed: number; expanded: number }>
   >(new Map());
   const [collapsingProjects, setCollapsingProjects] = useState<Set<number>>(new Set());
+  const [videoModalUrl, setVideoModalUrl] = useState<string | null>(null);
+  const [videoModalTitle, setVideoModalTitle] = useState<string>("");
   const textRefs = useRef<Map<number, HTMLParagraphElement>>(new Map());
 
   const toggleExpanded = (projectId: number) => {
@@ -325,17 +380,32 @@ const Projects = () => {
                     ? null
                     : project.liveUrl.map((url, index) => {
                         const icon = project.liveIcon[index];
+                        const isYoutubeLink = url.includes("youtube.com") || url.includes("youtu.be");
+                        
                         return (
-                          <Button key={url} variant="default" size="sm" asChild>
-                            <a
-                              href={url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex items-center"
-                            >
-                              {icon && renderIcon(icon)}
-                              {project.liveText[index]}
-                            </a>
+                          <Button key={url} variant="default" size="sm" asChild={!isYoutubeLink}>
+                            {isYoutubeLink ? (
+                              <button
+                                onClick={() => {
+                                  setVideoModalUrl(url);
+                                  setVideoModalTitle(project.title);
+                                }}
+                                className="flex items-center"
+                              >
+                                {icon && renderIcon(icon)}
+                                {project.liveText[index]}
+                              </button>
+                            ) : (
+                              <a
+                                href={url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center"
+                              >
+                                {icon && renderIcon(icon)}
+                                {project.liveText[index]}
+                              </a>
+                            )}
                           </Button>
                         );
                       })}
@@ -355,6 +425,10 @@ const Projects = () => {
           ))}
         </div>
       </div>
+
+      {videoModalUrl && (
+        <VideoModal videoUrl={videoModalUrl} projectTitle={videoModalTitle} onClose={() => setVideoModalUrl(null)} />
+      )}
     </section>
   );
 };
