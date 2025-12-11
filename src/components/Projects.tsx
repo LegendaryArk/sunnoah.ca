@@ -146,7 +146,7 @@ const Projects = () => {
         "A robot that mass-folds letters to be placed into envelopes. Designed a mechanical system using VEX IQ components and 3D-printed parts to fold paper accurately and efficiently. Developed a codebase in C++ to control the folding sequence, ensuring precise alignment and consistent folds using PID controllers and smart use of a variety of sensors.",
       tech: ["C++", "OOP", "Git", "PID Control", "3D-Printing", "CAD"],
       image: "/Paper Folding Robot.jpg",
-      liveUrl: ["https://youtu.be/CKogSlk9C5I", "/Final Report - Engineering a Paper-Folding Robot.pdf"],
+      liveUrl: ["https://youtu.be/K6T1ojHrifk", "/Final Report - Engineering a Paper-Folding Robot.pdf"],
       liveIcon: [siYoutube, FileText],
       liveText: ["Demo Video", "Report"],
       githubUrl: "https://github.com/LegendaryArk/Paper-Folder-Bot",
