@@ -1,16 +1,45 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Github, ChevronDown, ChevronUp } from "lucide-react";
-import { useState, useEffect, useRef } from "react";
+import { Github, ChevronDown, ChevronUp, FileText, ExternalLink } from "lucide-react";
+import { useState, useEffect, useRef, ReactNode } from "react";
 import { siAirplayvideo, siApple, siGoogleplay, siYoutube } from "simple-icons";
 
+type IconType = typeof siYoutube | typeof FileText;
+
+interface Project {
+  id: number;
+  title: string;
+  description: string;
+  tech: string[];
+  image: string;
+  liveUrl: string[];
+  liveIcon: IconType[];
+  liveText: string[];
+  githubUrl: string;
+}
+
+const renderIcon = (icon: IconType): ReactNode => {
+  if ('svg' in icon && 'title' in icon) {
+    return (
+      <svg
+        className="w-4 h-4 mr-2"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <title>{(icon as any).title}</title>
+        <path d={(icon as any).path} />
+      </svg>
+    );
+  }
+  const IconComponent = icon as any;
+  return <IconComponent className="w-4 h-4 mr-2" />;
+};
+
 const Projects = () => {
-  const [expandedProjects, setExpandedProjects] = useState<Set<number>>(
-    new Set()
-  );
-  const [overflowingProjects, setOverflowingProjects] = useState<Set<number>>(
-    new Set()
-  );
+  const [expandedProjects, setExpandedProjects] = useState<Set<number>>(new Set());
+  const [overflowingProjects, setOverflowingProjects] = useState<Set<number>>(new Set());
   const [projectHeights, setProjectHeights] = useState<
     Map<number, { collapsed: number; expanded: number }>
   >(new Map());
@@ -20,102 +49,110 @@ const Projects = () => {
   const toggleExpanded = (projectId: number) => {
     const isExpanded = expandedProjects.has(projectId);
     if (isExpanded) {
-      // Start collapse animation: keep content expanded until transition end
       setCollapsingProjects((prev) => new Set(prev).add(projectId));
     } else {
-      // Expand immediately
       const newExpanded = new Set(expandedProjects);
       newExpanded.add(projectId);
       setExpandedProjects(newExpanded);
     }
   };
 
-  const checkOverflow = () => {
-    const newOverflowing = new Set<number>();
-    const newHeights = new Map<
-      number,
-      { collapsed: number; expanded: number }
-    >();
+  const checkOverflow = useRef((projectId: number) => {
+    const element = textRefs.current.get(projectId);
+    if (!element) return;
 
-    textRefs.current.forEach((element, projectId) => {
-      if (element) {
-        // Measure collapsed height (clamped to 3 lines)
-        element.style.display = "-webkit-box";
-        (element.style as any).WebkitBoxOrient = "vertical";
-        (element.style as any).WebkitLineClamp = "3";
-        element.style.overflow = "hidden";
-        void element.offsetHeight; // Force reflow
-        const collapsedHeight = element.clientHeight;
+    // Get the current computed style
+    const style = window.getComputedStyle(element);
+    const lineHeight = parseFloat(style.lineHeight);
 
-        // Measure expanded height (no clamp)
-        element.style.display = "block";
-        (element.style as any).WebkitLineClamp = "";
-        element.style.overflow = "visible";
-        void element.offsetHeight; // Force reflow
-        const expandedHeight = element.scrollHeight;
+    // Calculate the actual height with line clamping
+    const tempElement = element.cloneNode(true) as HTMLParagraphElement;
+    tempElement.style.position = "absolute";
+    tempElement.style.visibility = "hidden";
+    tempElement.style.display = "-webkit-box";
+    tempElement.style.setProperty("-webkit-box-orient", "vertical");
+    tempElement.style.setProperty("-webkit-line-clamp", "3");
+    tempElement.style.overflow = "hidden";
+    tempElement.style.width = element.offsetWidth + "px";
 
-        // Store heights
-        newHeights.set(projectId, {
-          collapsed: collapsedHeight,
-          expanded: expandedHeight,
-        });
+    document.body.appendChild(tempElement);
+    const collapsedHeight = tempElement.offsetHeight;
+    document.body.removeChild(tempElement);
 
-        // Check if overflowing
-        if (expandedHeight > collapsedHeight + 1) {
-          // +1 for rounding errors
-          newOverflowing.add(projectId);
-        }
+    // Get the full height
+    const fullHeight = element.scrollHeight;
 
-        // Reset to current state
-        if (expandedProjects.has(projectId)) {
-          element.style.display = "block";
-          (element.style as any).WebkitLineClamp = "";
-          element.style.overflow = "visible";
-        } else {
-          element.style.display = "-webkit-box";
-          (element.style as any).WebkitBoxOrient = "vertical";
-          (element.style as any).WebkitLineClamp = "3";
-          element.style.overflow = "hidden";
-        }
-      }
+    setProjectHeights((prev) => {
+      const next = new Map(prev);
+      next.set(projectId, { collapsed: collapsedHeight, expanded: fullHeight });
+      return next;
     });
 
-    setProjectHeights(newHeights);
-    setOverflowingProjects(newOverflowing);
+    // Check if overflowing
+    if (fullHeight > collapsedHeight + 2) {
+      setOverflowingProjects((prev) => {
+        const next = new Set(prev);
+        next.add(projectId);
+        return next;
+      });
+    } else {
+      // Remove from overflowing set if it doesn't overflow
+      setOverflowingProjects((prev) => {
+        const next = new Set(prev);
+        next.delete(projectId);
+        return next;
+      });
+    }
+  });
+
+  const setTextRef = (projectId: number) => (el: HTMLParagraphElement | null) => {
+    if (el) {
+      textRefs.current.set(projectId, el);
+      
+      // Use ResizeObserver to check overflow when content or size changes
+      const observer = new ResizeObserver(() => {
+        checkOverflow.current(projectId);
+      });
+
+      observer.observe(el);
+
+      return () => observer.disconnect();
+    }
   };
 
   useEffect(() => {
-    // Check overflow after component mounts and when window resizes
-    let resizeRaf = 0;
+    // Check overflow for all projects on mount
+    textRefs.current.forEach((_, projectId) => {
+      setTimeout(() => {
+        checkOverflow.current(projectId);
+      }, 50);
+    });
+
     const handleResize = () => {
-      if (resizeRaf) cancelAnimationFrame(resizeRaf);
-      resizeRaf = requestAnimationFrame(() => {
-        checkOverflow();
+      textRefs.current.forEach((_, projectId) => {
+        checkOverflow.current(projectId);
       });
     };
 
-    requestAnimationFrame(() => {
-      checkOverflow();
-    });
     window.addEventListener("resize", handleResize);
-
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const setTextRef =
-    (projectId: number) => (el: HTMLParagraphElement | null) => {
-      if (el) {
-        textRefs.current.set(projectId, el);
-        // Check overflow after ref is set on next frame
-        requestAnimationFrame(() => {
-          checkOverflow();
-        });
-      }
-    };
-
-  const projects = [
+  const projects: Project[] = [
     {
       id: 1,
+      title: "Paper-Folding Robot",
+      description:
+        "A robot that mass-folds letters to be placed into envelopes. Designed a mechanical system using VEX IQ components and 3D-printed parts to fold paper accurately and efficiently. Developed a codebase in C++ to control the folding sequence, ensuring precise alignment and consistent folds using PID controllers and smart use of a variety of sensors.",
+      tech: ["C++", "OOP", "Git", "PID Control", "3D-Printing", "CAD"],
+      image: "/Paper Folding Robot.jpg",
+      liveUrl: ["https://youtu.be/CKogSlk9C5I", "/Final Report - Engineering a Paper-Folding Robot.pdf"],
+      liveIcon: [siYoutube, FileText],
+      liveText: ["Demo Video", "Report"],
+      githubUrl: "https://github.com/LegendaryArk/Paper-Folder-Bot",
+    },
+    {
+      id: 2,
       title: "Autonomous Robot Control System",
       description:
         "A control system for an autonomous robot using ROS2 and C++. Fused LiDAR data and odometry for precise navigation and obstacle avoidance. Then implemented path planning using A* Search Algorithm to navigate complex environments and followed the path using a Pure Pursuit and PID controller.",
@@ -127,7 +164,7 @@ const Projects = () => {
       githubUrl: "https://github.com/LegendaryArk/wato_asd_training",
     },
     {
-      id: 2,
+      id: 3,
       title: "Elapse",
       description:
         "A tournament companion app for VEX Robotics teams. Features adaptive match schedules, innovative scouting system, and real-time match notifications.",
@@ -142,7 +179,7 @@ const Projects = () => {
       githubUrl: "https://github.com/elapse-app/elapse",
     },
     {
-      id: 3,
+      id: 4,
       title: "ArkLib",
       description:
         "A C++ library made for VEX Robotics teams to streamline robot programming using OOP. Includes modules for motion algorithms, odometry, and control systems.",
@@ -157,7 +194,7 @@ const Projects = () => {
       githubUrl: "https://github.com/16868C/VRC2425-HighStakes",
     },
     {
-      id: 4,
+      id: 5,
       title: "Mentorful",
       description:
         "A mobile app designed to assist in rehabilitation and reducing recidivism through personalized reminders and scoring systems. Developed in a team of four using Flutter and FastAPI at Hack404.",
@@ -170,7 +207,7 @@ const Projects = () => {
       githubUrl: "https://github.com/LegendaryArk/Mentorful",
     },
     {
-      id: 5,
+      id: 6,
       title: "Boggle",
       description:
         "A digital version of the classic Boggle word game with an AI opponent. Led a team of four in designing and implementing the game using Java and JavaFX.",
@@ -225,7 +262,6 @@ const Projects = () => {
                     onTransitionEnd={(e) => {
                       if (e.propertyName === "height") {
                         if (collapsingProjects.has(project.id)) {
-                          // Now clamp and mark as collapsed
                           setExpandedProjects((prev) => {
                             const next = new Set(prev);
                             next.delete(project.id);
@@ -242,22 +278,12 @@ const Projects = () => {
                   >
                     <p
                       ref={setTextRef(project.id)}
-                      className="text-muted-foreground text-sm md:text-base leading-relaxed -webkit-box"
-                      style={{
-                        display:
-                          expandedProjects.has(project.id) || collapsingProjects.has(project.id)
-                            ? "block"
-                            : "-webkit-box",
-                        WebkitBoxOrient: "vertical",
-                        WebkitLineClamp:
-                          expandedProjects.has(project.id) || collapsingProjects.has(project.id)
-                            ? ""
-                            : 3,
-                        overflow:
-                          expandedProjects.has(project.id) || collapsingProjects.has(project.id)
-                            ? "visible"
-                            : "hidden",
-                      }}
+                      className="text-muted-foreground text-sm md:text-base leading-relaxed line-clamp-3"
+                      style={
+                        expandedProjects.has(project.id)
+                          ? { WebkitLineClamp: "unset" as any }
+                          : {}
+                      }
                     >
                       {project.description}
                     </p>
@@ -295,10 +321,10 @@ const Projects = () => {
                 </div>
 
                 <div className="flex flex-wrap gap-3">
-                  {project.liveUrl.length == 0
+                  {project.liveUrl.length === 0
                     ? null
                     : project.liveUrl.map((url, index) => {
-                        const LiveIcon = project.liveIcon[index];
+                        const icon = project.liveIcon[index];
                         return (
                           <Button key={url} variant="default" size="sm" asChild>
                             <a
@@ -307,18 +333,7 @@ const Projects = () => {
                               rel="noopener noreferrer"
                               className="flex items-center"
                             >
-                              {LiveIcon && (
-                                <svg
-                                  className="w-4 h-4 mr-2"
-                                  viewBox="0 0 24 24"
-                                  fill="currentColor"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  aria-hidden="true"
-                                >
-                                  <title>{LiveIcon.title}</title>
-                                  <path d={LiveIcon.path} />
-                                </svg>
-                              )}
+                              {icon && renderIcon(icon)}
                               {project.liveText[index]}
                             </a>
                           </Button>
