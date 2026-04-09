@@ -100,6 +100,7 @@ const Projects = () => {
   const [videoModalUrl, setVideoModalUrl] = useState<string | null>(null);
   const [videoModalTitle, setVideoModalTitle] = useState<string>("");
   const textRefs = useRef<Map<number, HTMLParagraphElement>>(new Map());
+  const resizeObservers = useRef<Map<number, ResizeObserver>>(new Map());
 
   const toggleExpanded = (projectId: number) => {
     const isExpanded = expandedProjects.has(projectId);
@@ -115,10 +116,6 @@ const Projects = () => {
   const checkOverflow = useRef((projectId: number) => {
     const element = textRefs.current.get(projectId);
     if (!element) return;
-
-    // Get the current computed style
-    const style = window.getComputedStyle(element);
-    const lineHeight = parseFloat(style.lineHeight);
 
     // Calculate the actual height with line clamping
     const tempElement = element.cloneNode(true) as HTMLParagraphElement;
@@ -161,18 +158,28 @@ const Projects = () => {
   });
 
   const setTextRef = (projectId: number) => (el: HTMLParagraphElement | null) => {
-    if (el) {
-      textRefs.current.set(projectId, el);
-      
-      // Use ResizeObserver to check overflow when content or size changes
-      const observer = new ResizeObserver(() => {
-        checkOverflow.current(projectId);
-      });
-
-      observer.observe(el);
-
-      return () => observer.disconnect();
+    const existingObserver = resizeObservers.current.get(projectId);
+    if (existingObserver) {
+      existingObserver.disconnect();
+      resizeObservers.current.delete(projectId);
     }
+
+    if (!el) {
+      textRefs.current.delete(projectId);
+      return;
+    }
+
+    textRefs.current.set(projectId, el);
+
+    const observer = new ResizeObserver(() => {
+      checkOverflow.current(projectId);
+    });
+    observer.observe(el);
+    resizeObservers.current.set(projectId, observer);
+
+    requestAnimationFrame(() => {
+      checkOverflow.current(projectId);
+    });
   };
 
   useEffect(() => {
@@ -190,7 +197,11 @@ const Projects = () => {
     };
 
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      resizeObservers.current.forEach((observer) => observer.disconnect());
+      resizeObservers.current.clear();
+    };
   }, []);
 
   const projects: Project[] = [
@@ -301,7 +312,10 @@ const Projects = () => {
   ];
 
   return (
-    <section id="projects" className="py-20 px-6 bg-muted/30">
+    <section
+      id="projects"
+      className="py-20 px-6 bg-gradient-to-b from-background via-muted/20 to-muted/35"
+    >
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold mb-4 bg-gradient-primary bg-clip-text text-transparent">
@@ -330,7 +344,7 @@ const Projects = () => {
 
                 <div className="mb-4">
                   <div
-                    className="overflow-hidden transition-all duration-500 ease-in-out"
+                    className="overflow-hidden transition-[height] duration-300 ease-out"
                     style={{
                       height: collapsingProjects.has(project.id)
                         ? `${projectHeights.get(project.id)?.collapsed || "auto"}px`

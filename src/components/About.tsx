@@ -24,7 +24,10 @@ const About = () => {
   ];
 
   return (
-    <section id="about" className="py-20 px-6">
+    <section
+      id="about"
+      className="py-20 px-6 bg-gradient-to-b from-background/90 via-background to-background"
+    >
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold mb-4 bg-gradient-primary bg-clip-text text-transparent">
