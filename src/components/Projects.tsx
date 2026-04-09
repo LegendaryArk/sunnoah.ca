@@ -259,7 +259,7 @@ const Projects = () => {
       description:
         "A tournament companion app for VEX Robotics teams. Features adaptive match schedules, innovative scouting system, and real-time match notifications.",
       tech: ["Flutter", "Dart", "Firebase", "Android Studio", "Figma", "Git"],
-      image: "https://winstonzhao.ca/Scene_6.6c0ecf82.webp",
+      image: "/Elapse Image.png",
       liveUrl: [
         "https://apps.apple.com/ca/app/elapse/id6596757269",
         "https://play.google.com/store/apps/details?id=com.elapseapp.elapse_app&hl=en_CA",
@@ -275,11 +275,11 @@ const Projects = () => {
         "A C++ library made for VEX Robotics teams to streamline robot programming using OOP. Includes modules for motion algorithms, odometry, and control systems.",
       tech: ["C++", "OOP", "PID Control", "Motion Algorithms", "Git"],
       image:
-        "https://res.cloudinary.com/djqjwhwmv/image/upload/v1757125844/bot_wevwkj.png",
+        "/VRC Robot Image.png",
       liveUrl: [
-        "https://drive.google.com/file/d/1mfyGScDE8__J_DV0KpJ_83Ot8QmMe9vo/view?usp=drivesdk",
+        "https://youtu.be/Ix-q2ixYf8Y",
       ],
-      liveIcon: [siAirplayvideo],
+      liveIcon: [siYoutube],
       liveText: ["Demo Video"],
       githubUrl: "https://github.com/16868C/VRC2425-HighStakes",
     },
@@ -290,7 +290,7 @@ const Projects = () => {
         "A mobile app designed to assist in rehabilitation and reducing recidivism through personalized reminders and scoring systems. Developed in a team of four using Flutter and FastAPI at Hack404.",
       tech: ["Flutter", "FastAPI", "Dart", "Python", "Google Calendar API"],
       image:
-        "https://res.cloudinary.com/djqjwhwmv/image/upload/v1757134758/Screenshot_2025-09-06_005854_blvmmn.png",
+        "/Mentorful Image.png",
       liveUrl: [],
       liveIcon: [],
       liveText: [],
@@ -303,7 +303,7 @@ const Projects = () => {
         "A digital version of the classic Boggle word game with an AI opponent. Led a team of four in designing and implementing the game using Java and JavaFX.",
       tech: ["Java", "Git", "Figma", "Graph Theory", "Data Structures"],
       image:
-        "https://res.cloudinary.com/djqjwhwmv/image/upload/v1757136317/Screenshot_2025-09-06_012452_ankp57.png",
+        "/Boggle Image.png",
       liveUrl: [],
       liveIcon: [],
       liveText: [],
