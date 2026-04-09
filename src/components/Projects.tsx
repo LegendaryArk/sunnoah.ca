@@ -196,6 +196,30 @@ const Projects = () => {
   const projects: Project[] = [
     {
       id: 1,
+      title: "CityWatch",
+      description:
+        "Developed a geospatial risk prediction system for city infrastructure, combining computer vision for image-based defect detection with machine learning models that forecast 30-, 90-, and 365-day failure risks. Features are aggregated into grid-based heatmaps and visualized on an interactive map, with predictions and incident data stored in a Supabase/PostGIS backend for real-time updates. The system automates feature extraction, ML inference, and spatial aggregation to provide actionable insights for maintenance planning.",
+      tech: ["Python", "TensorFlow", "OpenCV", "PostgreSQL/PostGIS", "Supabase", "FastAPI", "Express.js", "React"],
+      image: "/CityWatch Image.png",
+      liveUrl: [],
+      liveIcon: [],
+      liveText: [],
+      githubUrl: "https://github.com/LegendaryArk/CityWatch",
+    },
+    {
+      id: 2,
+      title: "VexDex",
+      description:
+        "VexDex is a Python data pipeline and API for VEX Robotics stats. It pulls live RobotEvents data, calculates team performance metrics like OPR, DPR, CCWM, and TrueSkill, stores results in SQL, and serves them through a FastAPI service with endpoints for teams, seasons, and refresh status.",
+      tech: ["Python", "FastAPI", "SQL", "Git", "GitHub Actions", "Azure SQL Database"],
+      image: "",
+      liveUrl: [],
+      liveIcon: [],
+      liveText: [],
+      githubUrl: "https://github.com/LegendaryArk/VexDex",
+    },
+    {
+      id: 3,
       title: "Paper-Folding Robot",
       description:
         "A robot that mass-folds letters to be placed into envelopes. Designed a mechanical system using VEX IQ components and 3D-printed parts to fold paper accurately and efficiently. Developed a codebase in C++ to control the folding sequence, ensuring precise alignment and consistent folds using PID controllers and smart use of a variety of sensors.",
@@ -207,7 +231,7 @@ const Projects = () => {
       githubUrl: "https://github.com/LegendaryArk/Paper-Folder-Bot",
     },
     {
-      id: 2,
+      id: 4,
       title: "Autonomous Robot Control System",
       description:
         "A control system for an autonomous robot using ROS2 and C++. Fused LiDAR data and odometry for precise navigation and obstacle avoidance. Then implemented path planning using A* Search Algorithm to navigate complex environments and followed the path using a Pure Pursuit and PID controller.",
@@ -219,7 +243,7 @@ const Projects = () => {
       githubUrl: "https://github.com/LegendaryArk/wato_asd_training",
     },
     {
-      id: 3,
+      id: 5,
       title: "Elapse",
       description:
         "A tournament companion app for VEX Robotics teams. Features adaptive match schedules, innovative scouting system, and real-time match notifications.",
@@ -234,7 +258,7 @@ const Projects = () => {
       githubUrl: "https://github.com/elapse-app/elapse",
     },
     {
-      id: 4,
+      id: 6,
       title: "ArkLib",
       description:
         "A C++ library made for VEX Robotics teams to streamline robot programming using OOP. Includes modules for motion algorithms, odometry, and control systems.",
@@ -249,7 +273,7 @@ const Projects = () => {
       githubUrl: "https://github.com/16868C/VRC2425-HighStakes",
     },
     {
-      id: 5,
+      id: 7,
       title: "Mentorful",
       description:
         "A mobile app designed to assist in rehabilitation and reducing recidivism through personalized reminders and scoring systems. Developed in a team of four using Flutter and FastAPI at Hack404.",
@@ -262,7 +286,7 @@ const Projects = () => {
       githubUrl: "https://github.com/LegendaryArk/Mentorful",
     },
     {
-      id: 6,
+      id: 8,
       title: "Boggle",
       description:
         "A digital version of the classic Boggle word game with an AI opponent. Led a team of four in designing and implementing the game using Java and JavaFX.",
