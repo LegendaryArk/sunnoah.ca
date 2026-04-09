@@ -43,22 +43,46 @@ const getYoutubeEmbedUrl = (url: string): string | null => {
   return match ? `https://www.youtube.com/embed/${match[1]}` : null;
 };
 
-const VideoModal = ({ videoUrl, projectTitle, onClose }: { videoUrl: string; projectTitle: string; onClose: () => void }) => {
+const VideoModal = ({
+  videoUrl,
+  projectTitle,
+  isVisible,
+  onRequestClose,
+  onExited,
+}: {
+  videoUrl: string;
+  projectTitle: string;
+  isVisible: boolean;
+  onRequestClose: () => void;
+  onExited: () => void;
+}) => {
   const embedUrl = getYoutubeEmbedUrl(videoUrl);
 
   if (!embedUrl) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4 backdrop-blur-sm" onClick={onClose}>
+    <div
+      className={`fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4 backdrop-blur-sm transition-opacity duration-200 ${
+        isVisible ? "opacity-100" : "opacity-0"
+      }`}
+      onClick={onRequestClose}
+      onTransitionEnd={(e) => {
+        if (e.target === e.currentTarget && !isVisible) {
+          onExited();
+        }
+      }}
+    >
       <div 
-        className="bg-background rounded-xl shadow-2xl max-w-4xl w-full relative border-2 border-primary/40 overflow-hidden"
+        className={`bg-background rounded-xl shadow-2xl max-w-6xl w-full max-h-[92vh] relative border-2 border-primary/40 overflow-hidden transition-all duration-200 ${
+          isVisible ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-95 translate-y-2"
+        }`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 bg-gradient-to-r from-primary/5 to-transparent">
           <h3 className="text-lg font-semibold text-foreground">{projectTitle}</h3>
           <button
-            onClick={onClose}
+            onClick={onRequestClose}
             className="p-2 hover:bg-primary/10 rounded-lg transition-colors text-muted-foreground hover:text-primary"
           >
             <X className="w-5 h-5" />
@@ -67,21 +91,25 @@ const VideoModal = ({ videoUrl, projectTitle, onClose }: { videoUrl: string; pro
 
         {/* Video Container */}
         <div className="aspect-video bg-black/90 m-4 rounded-lg overflow-hidden border border-primary/20">
-          <iframe
-            width="100%"
-            height="100%"
-            src={embedUrl}
-            title={projectTitle}
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            className="w-full h-full"
-          />
+          {!isVisible ? (
+            <div className="w-full h-full bg-black" aria-hidden="true" />
+          ) : (
+            <iframe
+              width="100%"
+              height="100%"
+              src={embedUrl}
+              title={projectTitle}
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="w-full h-full"
+            />
+          )}
         </div>
 
         {/* Footer */}
         <div className="px-6 py-4 bg-gradient-to-r from-transparent to-primary/5 flex justify-end gap-3">
-          <Button variant="outline" size="sm" onClick={onClose}>
+          <Button variant="outline" size="sm" onClick={onRequestClose}>
             Close
           </Button>
         </div>
@@ -99,8 +127,27 @@ const Projects = () => {
   const [collapsingProjects, setCollapsingProjects] = useState<Set<number>>(new Set());
   const [videoModalUrl, setVideoModalUrl] = useState<string | null>(null);
   const [videoModalTitle, setVideoModalTitle] = useState<string>("");
+  const [isVideoModalVisible, setIsVideoModalVisible] = useState(false);
   const textRefs = useRef<Map<number, HTMLParagraphElement>>(new Map());
   const resizeObservers = useRef<Map<number, ResizeObserver>>(new Map());
+
+  const openVideoModal = (url: string, title: string) => {
+    setVideoModalUrl(url);
+    setVideoModalTitle(title);
+    requestAnimationFrame(() => {
+      setIsVideoModalVisible(true);
+    });
+  };
+
+  const closeVideoModal = () => {
+    if (!videoModalUrl) return;
+    setIsVideoModalVisible(false);
+  };
+
+  const handleVideoModalExited = () => {
+    setVideoModalUrl(null);
+    setVideoModalTitle("");
+  };
 
   const toggleExpanded = (projectId: number) => {
     const isExpanded = expandedProjects.has(projectId);
@@ -421,19 +468,19 @@ const Projects = () => {
                         const isYoutubeLink = url.includes("youtube.com") || url.includes("youtu.be");
                         
                         return (
-                          <Button key={url} variant="default" size="sm" asChild={!isYoutubeLink}>
-                            {isYoutubeLink ? (
-                              <button
-                                onClick={() => {
-                                  setVideoModalUrl(url);
-                                  setVideoModalTitle(project.title);
-                                }}
-                                className="flex items-center"
-                              >
-                                {icon && renderIcon(icon)}
-                                {project.liveText[index]}
-                              </button>
-                            ) : (
+                          isYoutubeLink ? (
+                            <Button
+                              key={url}
+                              variant="default"
+                              size="sm"
+                              onClick={() => openVideoModal(url, project.title)}
+                              className="flex items-center"
+                            >
+                              {icon && renderIcon(icon)}
+                              {project.liveText[index]}
+                            </Button>
+                          ) : (
+                            <Button key={url} variant="default" size="sm" asChild>
                               <a
                                 href={url}
                                 target="_blank"
@@ -443,8 +490,8 @@ const Projects = () => {
                                 {icon && renderIcon(icon)}
                                 {project.liveText[index]}
                               </a>
-                            )}
-                          </Button>
+                            </Button>
+                          )
                         );
                       })}
                   <Button variant="outline" size="sm" asChild>
@@ -465,7 +512,13 @@ const Projects = () => {
       </div>
 
       {videoModalUrl && (
-        <VideoModal videoUrl={videoModalUrl} projectTitle={videoModalTitle} onClose={() => setVideoModalUrl(null)} />
+        <VideoModal
+          videoUrl={videoModalUrl}
+          projectTitle={videoModalTitle}
+          isVisible={isVideoModalVisible}
+          onRequestClose={closeVideoModal}
+          onExited={handleVideoModalExited}
+        />
       )}
     </section>
   );
