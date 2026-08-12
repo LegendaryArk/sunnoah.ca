@@ -35,7 +35,7 @@ export default function FeaturedProjects() {
               saveHomeScroll();
               navigate("/projects");
             }}
-            className="flex-none cursor-pointer rounded-[9px] border border-[var(--line)] px-5 py-3 text-[13px] font-medium transition-transform duration-250 ease-out hover:-translate-y-0.5"
+            className="flex-none cursor-pointer rounded-[9px] border border-[var(--line)] px-5 py-3 text-[13px] font-medium [transition:transform_.25s_ease-out,border-color_.5s_ease] hover:-translate-y-0.5"
           >
             More projects →
           </button>
@@ -53,8 +53,12 @@ export default function FeaturedProjects() {
               }}
               data-reveal={i}
               data-tween="scale"
-              className="cursor-pointer overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--bg)] opacity-0 [transition:opacity_.9s_cubic-bezier(.2,.7,.2,1),transform_.45s_cubic-bezier(.2,.7,.2,1),box-shadow_.3s_ease] hover:shadow-[0_16px_36px_var(--shadow)]"
-              style={{ transform: "translateY(24px)" }}
+              className="cursor-pointer overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--bg)] opacity-0 hover:shadow-[0_16px_36px_var(--shadow)]"
+              style={{
+                transform: "translateY(24px)",
+                transition:
+                  "opacity .9s cubic-bezier(.2,.7,.2,1), transform .45s cubic-bezier(.2,.7,.2,1), box-shadow .3s ease, background-color .5s ease, border-color .5s ease",
+              }}
             >
               <div className="relative flex h-[172px] items-end bg-[var(--slot)] p-3">
                 <div

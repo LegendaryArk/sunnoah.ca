@@ -69,7 +69,7 @@ export default function Contact() {
           className="grid grid-cols-[1fr_300px] items-start gap-14 opacity-0 [transition:opacity_.9s_ease,transform_.9s_ease]"
           style={{ transform: "translateY(22px)" }}
         >
-          <div className="rounded-2xl border border-[var(--line)] bg-[var(--bg)] px-8 py-[30px]">
+          <div className="rounded-2xl border border-[var(--line)] bg-[var(--bg)] px-8 py-[30px] [transition:background-color_.5s_ease,border-color_.5s_ease]">
             {!sent ? (
               <form onSubmit={submit}>
                 <div className="grid gap-5">
@@ -81,7 +81,7 @@ export default function Contact() {
                       value={form.name}
                       onChange={(e) => setField("name", e.target.value)}
                       placeholder="Jane Recruiter"
-                      className="w-full rounded-[9px] border border-[var(--line)] bg-[var(--panel)] px-3.5 py-3 text-[14.5px] text-[var(--text)] outline-none transition-colors duration-250 ease-out focus:border-[var(--accent)]"
+                      className="w-full rounded-[9px] border border-[var(--line)] bg-[var(--panel)] px-3.5 py-3 text-[14.5px] text-[var(--text)] outline-none [transition:border-color_.25s_ease-out,background-color_.5s_ease,color_.5s_ease] focus:border-[var(--accent)]"
                     />
                     <div
                       className="mt-[7px] font-mono text-[10.5px] transition-opacity duration-300 ease-out"
@@ -98,7 +98,7 @@ export default function Contact() {
                       value={form.email}
                       onChange={(e) => setField("email", e.target.value)}
                       placeholder="you@company.com"
-                      className="w-full rounded-[9px] border border-[var(--line)] bg-[var(--panel)] px-3.5 py-3 text-[14.5px] text-[var(--text)] outline-none transition-colors duration-250 ease-out focus:border-[var(--accent)]"
+                      className="w-full rounded-[9px] border border-[var(--line)] bg-[var(--panel)] px-3.5 py-3 text-[14.5px] text-[var(--text)] outline-none [transition:border-color_.25s_ease-out,background-color_.5s_ease,color_.5s_ease] focus:border-[var(--accent)]"
                     />
                     <div
                       className="mt-[7px] font-mono text-[10.5px] transition-opacity duration-300 ease-out"
@@ -116,7 +116,7 @@ export default function Contact() {
                       onChange={(e) => setField("message", e.target.value)}
                       rows={5}
                       placeholder="What are you building?"
-                      className="w-full resize-y rounded-[9px] border border-[var(--line)] bg-[var(--panel)] px-3.5 py-3 text-[14.5px] leading-[1.6] text-[var(--text)] outline-none transition-colors duration-250 ease-out focus:border-[var(--accent)]"
+                      className="w-full resize-y rounded-[9px] border border-[var(--line)] bg-[var(--panel)] px-3.5 py-3 text-[14.5px] leading-[1.6] text-[var(--text)] outline-none [transition:border-color_.25s_ease-out,background-color_.5s_ease,color_.5s_ease] focus:border-[var(--accent)]"
                     />
                     <div
                       className="mt-[7px] font-mono text-[10.5px] transition-opacity duration-300 ease-out"
@@ -128,7 +128,7 @@ export default function Contact() {
                 </div>
                 <button
                   type="submit"
-                  className="mt-6 inline-flex cursor-pointer justify-between rounded-[9px] bg-[var(--accent)] px-[22px] py-[13px] text-[13.5px] font-medium text-white transition-transform duration-250 ease-out hover:-translate-y-0.5"
+                  className="mt-6 inline-flex cursor-pointer justify-between rounded-[9px] bg-[var(--accent)] px-[22px] py-[13px] text-[13.5px] font-medium text-white [transition:transform_.25s_ease-out,background-color_.5s_ease] hover:-translate-y-0.5"
                 >
                   Send message →
                 </button>
@@ -163,7 +163,7 @@ export default function Contact() {
                 href={link.href}
                 target={link.href.startsWith("http") ? "_blank" : undefined}
                 rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                className="flex cursor-pointer justify-between border-b border-[var(--line)] py-[13px] text-sm"
+                className="flex cursor-pointer justify-between border-b border-[var(--line)] py-[13px] text-sm [transition:border-color_.5s_ease]"
               >
                 {link.label}
                 <span className="text-[var(--accent)]">↗</span>

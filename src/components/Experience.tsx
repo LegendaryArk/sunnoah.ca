@@ -99,7 +99,7 @@ export default function Experience() {
                           {e.stack.map((s) => (
                             <span
                               key={s}
-                              className="rounded-[7px] border border-[var(--line)] bg-[var(--chip)] px-[11px] py-[6px] font-mono text-[11.5px]"
+                              className="rounded-[7px] border border-[var(--line)] bg-[var(--chip)] px-[11px] py-[6px] font-mono text-[11.5px] [transition:background-color_.5s_ease,border-color_.5s_ease]"
                             >
                               {s}
                             </span>
@@ -135,14 +135,14 @@ export default function Experience() {
                       <div className="flex flex-wrap gap-2">
                         <Link
                           to={`/experience/${e.id}`}
-                          className="rounded-lg bg-[var(--accent)] px-[15px] py-[10px] text-[12.5px] font-medium text-white"
+                          className="rounded-lg bg-[var(--accent)] px-[15px] py-[10px] text-[12.5px] font-medium text-white [transition:background-color_.5s_ease]"
                         >
                           Full write-up →
                         </Link>
                         {e.links.map(([label]) => (
                           <span
                             key={label}
-                            className="cursor-pointer rounded-lg border border-[var(--line)] px-[15px] py-[10px] text-[12.5px] font-medium transition-transform duration-200 ease-out hover:-translate-y-0.5"
+                            className="cursor-pointer rounded-lg border border-[var(--line)] px-[15px] py-[10px] text-[12.5px] font-medium [transition:transform_.2s_ease-out,border-color_.5s_ease] hover:-translate-y-0.5"
                           >
                             {label} ↗
                           </span>

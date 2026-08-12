@@ -24,6 +24,22 @@ function reducedMotion() {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
+// The element's own declared transition (e.g. a theme color fade set via
+// React's style prop) — captured once so reveal()/unreveal() can restore it
+// instead of permanently clobbering it with their own transient overrides.
+const baseTransitions = new WeakMap<HTMLElement, string>();
+
+function getBaseTransition(el: HTMLElement): string {
+  if (!baseTransitions.has(el)) {
+    baseTransitions.set(el, el.style.transition || "");
+  }
+  return baseTransitions.get(el) as string;
+}
+
+function joinTransitions(...parts: string[]) {
+  return parts.filter(Boolean).join(", ");
+}
+
 function tweenVars(el: HTMLElement) {
   const dir = el.getAttribute("data-tween") || "up";
   return {
@@ -36,9 +52,10 @@ function tweenVars(el: HTMLElement) {
 function reveal(el: RevealElement) {
   if (el.getAttribute("data-seen")) return;
   el.setAttribute("data-seen", "1");
+  const base = getBaseTransition(el);
   const v = tweenVars(el);
   if (reducedMotion()) {
-    el.style.transition = "opacity .4s ease";
+    el.style.transition = joinTransitions(base, "opacity .4s ease");
     el.style.opacity = "1";
     el.style.transform = "none";
     return;
@@ -57,6 +74,12 @@ function reveal(el: RevealElement) {
   el._revealAnim = anim;
   el.style.opacity = "1";
   el.style.transform = "none";
+  // Restore the element's own transition (e.g. a theme color fade) on the
+  // next frame, once the instant opacity/transform snap above has committed
+  // — otherwise it would itself trigger a competing CSS transition.
+  requestAnimationFrame(() => {
+    el.style.transition = base;
+  });
   anim.finished
     .then(() => {
       el.style.willChange = "";
@@ -68,15 +91,19 @@ function reveal(el: RevealElement) {
 function unreveal(el: RevealElement) {
   if (!el.getAttribute("data-seen")) return;
   el.removeAttribute("data-seen");
+  const base = getBaseTransition(el);
   const v = tweenVars(el);
   el._revealAnim?.cancel();
   el._revealAnim = null;
   if (reducedMotion()) {
-    el.style.transition = "opacity .3s ease";
+    el.style.transition = joinTransitions(base, "opacity .3s ease");
     el.style.opacity = "0";
     return;
   }
-  el.style.transition = "opacity .45s ease, transform .45s cubic-bezier(.4,0,.7,.2), filter .45s ease";
+  el.style.transition = joinTransitions(
+    base,
+    "opacity .45s ease, transform .45s cubic-bezier(.4,0,.7,.2), filter .45s ease",
+  );
   el.style.opacity = "0";
   el.style.transform = v.from;
   el.style.filter = "blur(5px)";

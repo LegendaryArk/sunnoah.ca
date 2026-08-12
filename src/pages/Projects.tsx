@@ -115,8 +115,12 @@ export default function Projects() {
             onClick={() => openProject(p.id)}
             data-reveal={i}
             data-tween="scale"
-            className="h-full cursor-pointer overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--panel)] opacity-0 [transition:opacity_.9s_cubic-bezier(.2,.7,.2,1),transform_.45s_cubic-bezier(.2,.7,.2,1),box-shadow_.3s_ease] hover:shadow-[0_16px_36px_var(--shadow)]"
-            style={{ transform: "translateY(24px)" }}
+            className="h-full cursor-pointer overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--panel)] opacity-0 hover:shadow-[0_16px_36px_var(--shadow)]"
+            style={{
+              transform: "translateY(24px)",
+              transition:
+                "opacity .9s cubic-bezier(.2,.7,.2,1), transform .45s cubic-bezier(.2,.7,.2,1), box-shadow .3s ease, background-color .5s ease, border-color .5s ease",
+            }}
           >
             <div className="relative flex h-[150px] items-end bg-[var(--slot)] p-3">
               <div
@@ -167,7 +171,8 @@ export default function Projects() {
             style={{
               transform: visible ? "scale(1)" : "scale(.94)",
               opacity: visible ? 1 : 0,
-              transition: "transform 280ms cubic-bezier(.2,.7,.2,1), opacity 220ms ease",
+              transition:
+                "transform 280ms cubic-bezier(.2,.7,.2,1), opacity 220ms ease, background-color .5s ease, border-color .5s ease",
             }}
           >
             <div className="flex items-center border-b border-[var(--line)]">
@@ -212,7 +217,7 @@ export default function Projects() {
                       {openProjectData.stack.map((s) => (
                         <span
                           key={s}
-                          className="rounded-[7px] border border-[var(--line)] bg-[var(--chip)] px-3 py-[7px] font-mono text-[11.5px]"
+                          className="rounded-[7px] border border-[var(--line)] bg-[var(--chip)] px-3 py-[7px] font-mono text-[11.5px] [transition:background-color_.5s_ease,border-color_.5s_ease]"
                         >
                           {s}
                         </span>
@@ -278,7 +283,7 @@ export default function Projects() {
                   <button
                     type="button"
                     onClick={() => navigate(`/projects/${openProjectData.id}`)}
-                    className="flex cursor-pointer justify-between rounded-[9px] bg-[var(--accent)] px-4 py-3 text-[13px] font-medium text-white"
+                    className="flex cursor-pointer justify-between rounded-[9px] bg-[var(--accent)] px-4 py-3 text-[13px] font-medium text-white [transition:background-color_.5s_ease]"
                   >
                     Read more<span>→</span>
                   </button>

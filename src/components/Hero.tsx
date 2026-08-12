@@ -27,7 +27,10 @@ export default function Hero() {
           className="mb-[34px] flex items-center gap-4 opacity-0 [transition:opacity_.9s_cubic-bezier(.2,.7,.2,1),transform_.9s_cubic-bezier(.2,.7,.2,1)]"
           style={{ transform: "translateY(20px)" }}
         >
-          <div className="inline-flex items-center gap-[9px] rounded-full bg-[var(--accent-soft)] px-[13px] py-[6px] font-mono text-[10.5px] font-medium tracking-[.11em] text-[var(--accent-text)]">
+          <div
+            className="inline-flex items-center gap-[9px] rounded-full bg-[var(--accent-soft)] px-[13px] py-[6px] font-mono text-[10.5px] font-medium tracking-[.11em] text-[var(--accent-text)]"
+            style={{ transition: "background-color .5s ease, color .5s ease" }}
+          >
             <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent)] [animation:pulse_2.4s_ease-in-out_infinite]" />
             OPEN TO SUMMER 2027 INTERNSHIPS
           </div>
@@ -64,14 +67,14 @@ export default function Hero() {
             <button
               type="button"
               onClick={() => navigate("/projects")}
-              className="flex cursor-pointer justify-between rounded-[9px] bg-[var(--accent)] px-5 py-[13px] text-[13.5px] font-medium text-white transition-transform duration-250 ease-out hover:-translate-y-0.5"
+              className="flex cursor-pointer justify-between rounded-[9px] bg-[var(--accent)] px-5 py-[13px] text-[13.5px] font-medium text-white [transition:transform_.25s_ease-out,background-color_.5s_ease] hover:-translate-y-0.5"
             >
               Browse projects<span>→</span>
             </button>
             <button
               type="button"
               onClick={() => jump("resume")}
-              className="flex cursor-pointer justify-between rounded-[9px] border border-[var(--line)] bg-[var(--panel)] px-5 py-[13px] text-[13.5px] font-medium transition-transform duration-250 ease-out hover:-translate-y-0.5"
+              className="flex cursor-pointer justify-between rounded-[9px] border border-[var(--line)] bg-[var(--panel)] px-5 py-[13px] text-[13.5px] font-medium [transition:transform_.25s_ease-out,background-color_.5s_ease,border-color_.5s_ease] hover:-translate-y-0.5"
             >
               Résumé<span>↓</span>
             </button>

@@ -80,7 +80,7 @@ export default function Resume() {
         className="grid grid-cols-[1fr_300px] items-start gap-6 opacity-0 [transition:opacity_.9s_ease,transform_.9s_ease]"
         style={{ transform: "translateY(22px)" }}
       >
-        <div className="overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--panel)] shadow-[0_10px_34px_var(--shadow)]">
+        <div className="overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--panel)] shadow-[0_10px_34px_var(--shadow)] [transition:background-color_.5s_ease,border-color_.5s_ease]">
           <div className="flex items-center justify-between border-b border-[var(--line)] px-[18px] py-[13px] font-mono text-[10.5px] tracking-[.12em] text-[var(--muted)]">
             <span>{resume.file}</span>
             <span>UPDATED AUG 2026</span>
@@ -90,12 +90,12 @@ export default function Resume() {
             title="Résumé preview"
             tabIndex={-1}
             loading="lazy"
-            className="block h-[760px] w-full border-0 bg-[var(--chip)]"
+            className="block h-[760px] w-full border-0 bg-[var(--chip)] [transition:background-color_.5s_ease]"
           />
         </div>
 
         <div className="flex flex-col gap-4">
-          <div className="rounded-2xl border border-[var(--line)] bg-[var(--panel)] px-[26px] py-6">
+          <div className="rounded-2xl border border-[var(--line)] bg-[var(--panel)] px-[26px] py-6 [transition:background-color_.5s_ease,border-color_.5s_ease]">
             <div className="mb-2 text-[19px] font-medium tracking-[-.02em]">{resume.title}</div>
             <p className="m-0 mb-[18px] text-sm leading-[1.65] font-light text-[var(--muted)]">
               {resume.note}
@@ -114,7 +114,7 @@ export default function Resume() {
             <a
               href={resume.src}
               download={resume.file}
-              className="flex justify-between rounded-[9px] bg-[var(--accent)] px-4 py-3 text-[13px] font-medium text-white"
+              className="flex justify-between rounded-[9px] bg-[var(--accent)] px-4 py-3 text-[13px] font-medium text-white [transition:background-color_.5s_ease]"
             >
               Download PDF<span>↓</span>
             </a>
@@ -122,7 +122,7 @@ export default function Resume() {
               href={resume.src}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-[9px] flex justify-between rounded-[9px] border border-[var(--line)] px-4 py-3 text-[13px] font-medium"
+              className="mt-[9px] flex justify-between rounded-[9px] border border-[var(--line)] px-4 py-3 text-[13px] font-medium [transition:border-color_.5s_ease]"
             >
               Open in new tab<span>↗</span>
             </a>

@@ -27,7 +27,7 @@ export default function Skills() {
                 {g.items.map((t) => (
                   <span
                     key={t}
-                    className="rounded-[7px] border border-[var(--line)] bg-[var(--chip)] px-[11px] py-[6px] font-mono text-[11.5px] transition-transform duration-200 ease-out hover:-translate-y-0.5"
+                    className="rounded-[7px] border border-[var(--line)] bg-[var(--chip)] px-[11px] py-[6px] font-mono text-[11.5px] [transition:transform_.2s_ease-out,background-color_.5s_ease,border-color_.5s_ease] hover:-translate-y-0.5"
                   >
                     {t}
                   </span>

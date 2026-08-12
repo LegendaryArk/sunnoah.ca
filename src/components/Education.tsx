@@ -16,8 +16,11 @@ export default function Education() {
 
       <div
         data-reveal="1"
-        className="rounded-2xl border border-[var(--line)] bg-[var(--panel)] px-[34px] py-8 opacity-0 shadow-[0_10px_34px_var(--shadow)] [transition:opacity_.9s_ease,transform_.9s_ease]"
-        style={{ transform: "translateY(22px)" }}
+        className="rounded-2xl border border-[var(--line)] bg-[var(--panel)] px-[34px] py-8 opacity-0 shadow-[0_10px_34px_var(--shadow)]"
+        style={{
+          transform: "translateY(22px)",
+          transition: "opacity .9s ease, transform .9s ease, background-color .5s ease, border-color .5s ease",
+        }}
       >
         <div className="grid grid-cols-[1fr_240px] items-start gap-10">
           <div>
@@ -35,7 +38,7 @@ export default function Education() {
               {COURSES.map((c) => (
                 <span
                   key={c}
-                  className="rounded-[7px] border border-[var(--line)] bg-[var(--chip)] px-[11px] py-[6px] font-mono text-[11.5px]"
+                  className="rounded-[7px] border border-[var(--line)] bg-[var(--chip)] px-[11px] py-[6px] font-mono text-[11.5px] [transition:background-color_.5s_ease,border-color_.5s_ease]"
                 >
                   {c}
                 </span>
