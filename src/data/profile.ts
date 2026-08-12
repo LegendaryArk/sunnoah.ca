@@ -1,15 +1,3 @@
-export interface StatRailItem {
-  value: string;
-  label: string;
-}
-
-export const STAT_RAIL: StatRailItem[] = [
-  { value: "3.92", label: "GPA / 4.00" },
-  { value: "5", label: "WORLDS APPEARANCES" },
-  { value: "3.5k+", label: "APP DOWNLOADS" },
-  { value: "1″/1°", label: "MOTION PRECISION" },
-];
-
 export interface ContactLink {
   label: string;
   href: string;
