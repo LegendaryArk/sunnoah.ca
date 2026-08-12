@@ -1,3 +1,9 @@
+import Hero from "../components/Hero";
+
 export default function Home() {
-  return <div style={{ animation: "pageIn .55s cubic-bezier(.2,.7,.2,1) both" }} />;
+  return (
+    <div style={{ animation: "pageIn .55s cubic-bezier(.2,.7,.2,1) both" }}>
+      <Hero />
+    </div>
+  );
 }
