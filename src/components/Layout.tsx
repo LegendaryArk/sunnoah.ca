@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { useScrollReveal } from "../hooks/useScrollReveal";
 import { useParallax } from "../hooks/useParallax";
+import Footer from "./Footer";
 
 export default function Layout() {
   useScrollReveal();
@@ -9,6 +10,7 @@ export default function Layout() {
   return (
     <div className="min-h-screen bg-[var(--bg)] text-[var(--text)] transition-colors duration-500">
       <Outlet />
+      <Footer />
     </div>
   );
 }
