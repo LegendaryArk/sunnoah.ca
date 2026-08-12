@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { PROJECTS } from "../data/projects";
+import { saveHomeScroll } from "../lib/scrollMemory";
 
 export default function FeaturedProjects() {
   const navigate = useNavigate();
@@ -30,7 +31,10 @@ export default function FeaturedProjects() {
           </div>
           <button
             type="button"
-            onClick={() => navigate("/projects")}
+            onClick={() => {
+              saveHomeScroll();
+              navigate("/projects");
+            }}
             className="flex-none cursor-pointer rounded-[9px] border border-[var(--line)] px-5 py-3 text-[13px] font-medium transition-transform duration-250 ease-out hover:-translate-y-0.5"
           >
             More projects →
