@@ -10,29 +10,29 @@ export interface ResumeVariant {
 
 export const RESUMES: ResumeVariant[] = [
   {
-    id: "software",
-    tab: "SOFTWARE / DATA",
-    title: "Software & data emphasis",
-    file: "noah-sun-resume-software.pdf",
-    src: "/noah-sun-resume.pdf",
-    note: "Leads with the LLM agent platform, ETL and data work, and the full-stack projects. Best fit for SWE and data internships.",
-    highlights: [
-      ["LEADS WITH", "Signal · CityWatch"],
-      ["LANGUAGES", "C/C++, Python, TS, Dart"],
-      ["DATA", "PostgreSQL, Azure, PostGIS"],
-    ],
-  },
-  {
     id: "robotics",
     tab: "ROBOTICS / EMBEDDED",
-    title: "Robotics & embedded emphasis",
-    file: "noah-sun-resume-robotics.pdf",
-    src: "/noah-sun-resume-robotics.pdf",
+    title: "Robotics & Embedded Emphasis",
+    file: "noah_sun_resume_robotics.pdf",
+    src: "/noah_sun_resume_robotics.pdf",
     note: "Leads with multi-robot coordination, LiDAR navigation, and firmware. Best fit for robotics and hardware teams.",
     highlights: [
       ["LEADS WITH", "AutoFleet · Nav stack"],
       ["HARDWARE", "STM32, Pico, Jetson"],
       ["CONTROLS", "ROS2, RTOS, PID, Kinematics"],
+    ],
+  },
+  {
+    id: "software",
+    tab: "SOFTWARE / DATA",
+    title: "Software & Data Emphasis",
+    file: "noah_sun_resume_software.pdf",
+    src: "/noah_sun_resume_software.pdf",
+    note: "Leads with the LLM agent platform, ETL and data work, and the full-stack projects. Best fit for SWE and data internships.",
+    highlights: [
+      ["LEADS WITH", "Signal · CityWatch"],
+      ["LANGUAGES", "C/C++, Python, TS, Dart"],
+      ["DATA", "PostgreSQL, Azure, PostGIS"],
     ],
   },
 ];

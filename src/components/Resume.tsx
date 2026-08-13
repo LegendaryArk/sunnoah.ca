@@ -86,7 +86,7 @@ export default function Resume() {
             <span>UPDATED AUG 2026</span>
           </div>
           <iframe
-            src={resumeReady ? resume.src : "about:blank"}
+            src={resumeReady ? `${resume.src}#navpanes=0` : "about:blank"}
             title="Résumé preview"
             tabIndex={-1}
             loading="lazy"
