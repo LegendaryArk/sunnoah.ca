@@ -1,4 +1,4 @@
-import { COURSES, EDUCATION } from "../data/awards";
+import { COURSES, EDUCATION } from "../data/education";
 
 export default function Education() {
   return (
@@ -36,12 +36,22 @@ export default function Education() {
             </div>
             <div className="flex flex-wrap gap-[7px]">
               {COURSES.map((c) => (
-                <span
-                  key={c}
-                  className="rounded-[7px] border border-[var(--line)] bg-[var(--chip)] px-[11px] py-[6px] font-mono text-[11.5px] [transition:background-color_.5s_ease,border-color_.5s_ease]"
-                >
-                  {c}
-                </span>
+                <div key={c.code} className="group relative">
+                  <a
+                    href={c.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block rounded-[7px] border border-[var(--line)] bg-[var(--chip)] px-[11px] py-[6px] font-mono text-[11.5px] [transition:transform_.2s_ease-out,background-color_.5s_ease,border-color_.5s_ease] hover:-translate-y-0.5"
+                  >
+                    {c.name}
+                  </a>
+                  <div
+                    role="tooltip"
+                    className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 w-max max-w-[220px] -translate-x-1/2 translate-y-1 rounded-lg border border-[var(--line)] bg-[var(--panel)] px-3 py-2 text-[12px] leading-[1.5] font-light text-[var(--text)] opacity-0 shadow-[0_10px_28px_var(--shadow)] transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100"
+                  >
+                    {c.desc}
+                  </div>
+                </div>
               ))}
             </div>
           </div>
