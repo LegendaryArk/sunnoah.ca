@@ -9,13 +9,30 @@ export interface Experience {
   stats: [string, string][];
   stack: string[];
   links: [string, string][];
-  slot: string;
+  img: string;
 }
 
 export const EXPERIENCES: Experience[] = [
   {
+    id: "tvfi",
+    period: "Upcoming Fall 2026",
+    role: "Full Stack Software Developer",
+    org: "Thames Valley Financial Inc.",
+    meta: "EXPERIENCE · Upcoming 2026",
+    blurb:
+      "Upcoming internship at fintech startup Thames Valley Financial as a full stack software developer. Working towards a better retirement model in Canada.",
+    bullets: [
+    ],
+    stats: [],
+    stack: ["C#", "Python"],
+    links: [
+      ["Company site", "https://www.tvfi.ca/"],
+    ],
+    img: "",
+  },
+  {
     id: "warg",
-    period: "2025 — NOW",
+    period: "Sept 2025 — NOW",
     role: "Embedded Flight Software Developer",
     org: "Waterloo Aerial Robotics Group",
     meta: "EXPERIENCE · SEP 2025 — PRESENT · TEAM OF 4",
@@ -33,14 +50,14 @@ export const EXPERIENCES: Experience[] = [
     ],
     stack: ["C++", "STM32", "RTOS", "SPI", "Foxglove", "Git"],
     links: [
-      ["Team site", "↗"],
-      ["GitHub", "↗"],
+      ["Team site", "https://www.uwarg.com/"],
+      ["GitHub", "https://github.com/UWARG/efs-zeropilot-4.0"],
     ],
-    slot: "[ PHOTO — STM32 BENCH SETUP ]",
+    img: "",
   },
   {
     id: "foundry",
-    period: "2026",
+    period: "Jan 2026 — Apr 2026",
     role: "Forward Deployed Engineer",
     org: "Ascendance Foundry",
     meta: "EXPERIENCE · JAN 2026 — APR 2026",
@@ -54,11 +71,11 @@ export const EXPERIENCES: Experience[] = [
     stats: [
       ["AUTOMATIONS", "5"],
       ["ERROR REDUCTION", "80%"],
-      ["PIPELINES", "2 ETL"],
+      ["Data PIPELINES", "2"],
     ],
     stack: ["Python", "Playwright", "Claude API", "Azure Data Factory", "Power BI"],
-    links: [["Company", "↗"]],
-    slot: "[ SCREENSHOT — POWER BI DASHBOARD ]",
+    links: [["Company", "https://www.ascendancefoundry.com/"]],
+    img: "af.jpg",
   },
   {
     id: "elapse",
@@ -81,11 +98,11 @@ export const EXPERIENCES: Experience[] = [
     ],
     stack: ["Flutter", "Dart", "Firebase", "Cloud Functions"],
     links: [
-      ["App Store", "↗"],
-      ["Google Play", "↗"],
-      ["GitHub", "↗"],
+      ["App Store", "https://apps.apple.com/ca/app/elapse/id6596757269"],
+      ["Google Play", "https://play.google.com/store/apps/details?id=com.elapseapp.elapse_app&hl=en_CA&pli=1"],
+      ["GitHub", "https://github.com/elapse-app/elapse"],
     ],
-    slot: "[ SCREENSHOT — ELAPSE APP ]",
+    img: "elapse.png",
   },
   {
     id: "checkmate",
@@ -108,10 +125,10 @@ export const EXPERIENCES: Experience[] = [
     ],
     stack: ["C++", "OOP", "PID Control", "Motor Control", "Kinematics"],
     links: [
-      ["Demo video", "↗"],
-      ["GitHub", "↗"],
+      ["Demo video", "https://youtu.be/Ix-q2ixYf8Y"],
+      ["GitHub", "https://github.com/16868C/VRC2425-HighStakes"],
     ],
-    slot: "[ PHOTO — COMPETITION ROBOT ]",
+    img: "checkmate.png",
   },
   {
     id: "mi3l",
@@ -131,7 +148,7 @@ export const EXPERIENCES: Experience[] = [
       ["COMPUTE", "Jetson Nano"],
     ],
     stack: ["C++", "Python", "Jetson Nano", "RealSense", "OpenCV"],
-    links: [["Demo video", "↗"]],
-    slot: "[ PHOTO — JETSON + REALSENSE RIG ]",
+    links: [["Team Site", "https://mi3lschool.org/"]],
+    img: "vex_ai.jpg",
   },
 ];

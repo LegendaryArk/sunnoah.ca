@@ -113,13 +113,18 @@ export default function Experience() {
                         <div
                           className="absolute inset-0"
                           style={{
-                            backgroundImage:
-                              "repeating-linear-gradient(135deg,var(--stripe) 0 2px,transparent 2px 9px)",
+                            backgroundImage: "repeating-linear-gradient(135deg,var(--stripe) 0 2px,transparent 2px 9px)",
                           }}
-                        />
-                        <span className="relative font-mono text-[9px] text-[var(--muted)]">
-                          {e.slot}
-                        </span>
+                        >
+                          {e.img && (
+                            <img
+                              className="absolute inset-0 h-full w-full object-cover"
+                              src={e.img}
+                              alt=""
+                              loading="lazy"
+                            />
+                          )}
+                        </div>
                       </div>
                       <div className="grid border-t border-[var(--line)]">
                         {toKeyValues(e.stats).map((s) => (
@@ -137,15 +142,17 @@ export default function Experience() {
                           to={`/experience/${e.id}`}
                           className="rounded-lg bg-[var(--accent)] px-[15px] py-[10px] text-[12.5px] font-medium text-white [transition:background-color_.5s_ease]"
                         >
-                          Full write-up →
+                          Read more →
                         </Link>
-                        {e.links.map(([label]) => (
-                          <span
-                            key={label}
+                        {e.links.map(([label, url]) => (
+                          <Link
+                            to={url}
+                            target="_blank"
+                            rel="noopener noreferrer"
                             className="cursor-pointer rounded-lg border border-[var(--line)] px-[15px] py-[10px] text-[12.5px] font-medium [transition:transform_.2s_ease-out,border-color_.5s_ease] hover:-translate-y-0.5"
                           >
                             {label} ↗
-                          </span>
+                          </Link>
                         ))}
                       </div>
                     </div>
