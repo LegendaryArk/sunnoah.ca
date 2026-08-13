@@ -10,6 +10,6 @@ export const CONTACT_LINKS: ContactLink[] = [
 ];
 
 export const PHONE = "(647) 700-5886";
-export const LOCATION = "Waterloo, ON";
+export const LOCATION = "TORONTO, CA";
 export const FOOTER_NAME = "NOAH SUN — 2026";
 export const FOOTER_EMAIL = "NN2SUN@UWATERLOO.CA";

@@ -1,10 +1,35 @@
+import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSectionJump } from "../hooks/useSectionJump";
-import { CONTACT_LINKS } from "../data/profile";
+import { CONTACT_LINKS, LOCATION } from "../data/profile";
 
 export default function Hero() {
   const navigate = useNavigate();
   const jump = useSectionJump();
+  const movesRef = useRef<HTMLSpanElement>(null);
+
+  // A CSS transition can't pick up where a :hover-triggered animation left
+  // off — per spec its "before" value ignores the animation's contribution,
+  // so removing the animation just snaps to rest instead of easing there.
+  // Capturing the live transform and transitioning from that explicit value
+  // sidesteps it.
+  const startDrift = () => {
+    const el = movesRef.current;
+    if (!el) return;
+    el.style.transition = "none";
+    el.style.animation = "drift .8s ease-in-out infinite";
+  };
+
+  const stopDrift = () => {
+    const el = movesRef.current;
+    if (!el) return;
+    const current = getComputedStyle(el).transform;
+    el.style.animation = "none";
+    el.style.transform = current === "none" ? "translateX(0)" : current;
+    void el.offsetWidth;
+    el.style.transition = "transform .3s ease";
+    el.style.transform = "translateX(0)";
+  };
 
   return (
     <div
@@ -36,22 +61,48 @@ export default function Hero() {
             OPEN TO SUMMER 2027 INTERNSHIPS
           </div>
           <div className="font-mono text-[10.5px] tracking-[.14em] text-[var(--muted)]">
-            WATERLOO, ON
+            {LOCATION}
           </div>
         </div>
 
         <h1
           data-reveal="1"
           data-tween="scale"
-          className="m-0 max-w-[17ch] text-[86px] leading-[0.99] font-normal tracking-[-.048em] opacity-0 [transition:opacity_.95s_cubic-bezier(.2,.7,.2,1),transform_.95s_cubic-bezier(.2,.7,.2,1)]"
+          className="m-0 max-w-[17ch] text-[96px] leading-[0.99] font-normal tracking-[-.048em] opacity-0 [transition:opacity_.95s_cubic-bezier(.2,.7,.2,1),transform_.95s_cubic-bezier(.2,.7,.2,1)]"
           style={{ transform: "translateY(22px)" }}
         >
-          Noah Sun builds software that moves{" "}
-          <span className="text-[var(--accent)]">physical things</span>.
+          Noah Sun
         </h1>
 
-        <div
+        <p
           data-reveal="2"
+          className="m-0 mt-5 max-w-[42ch] text-[30px] leading-[1.5] font-light text-[var(--muted)] opacity-0 [transition:opacity_.9s_ease,transform_.9s_ease] [text-wrap:pretty]"
+          style={{ transform: "translateY(20px)" }}
+        >
+          Building software: some of it ships,{" "}
+          <span className="text-[var(--accent)]">
+            some of it{" "}
+            <span
+              ref={movesRef}
+              onMouseEnter={startDrift}
+              onMouseLeave={stopDrift}
+              onTransitionEnd={() => {
+                const el = movesRef.current;
+                if (el) {
+                  el.style.transition = "";
+                  el.style.transform = "";
+                }
+              }}
+              className="inline-block [will-change:transform]"
+            >
+              moves
+            </span>
+          </span>
+          .
+        </p>
+
+        <div
+          data-reveal="3"
           className="mt-14 grid grid-cols-[1fr_300px] gap-11 border-t border-[var(--line)] pt-7 opacity-0 [transition:opacity_.9s_ease,transform_.9s_ease]"
           style={{ transform: "translateY(20px)" }}
         >
@@ -69,13 +120,14 @@ export default function Hero() {
                 <span className="text-[var(--accent)]">noah@waterloo</span>:~$ whoami --now
               </div>
               <div>→ Mechatronics Engineering &rsquo;30, University of Waterloo</div>
-              <div>→ Flight software, Waterloo Aerial Robotics Group</div>
-              <div>→ 32 MB flash driver + RTOS flash translation layer, STM32</div>
+              <div>→ Full Stack Software Engineer, Thames Valley Financial Inc.</div>
+              <div>→ Embedded Flight Software Developer, Waterloo Aerial Robotics Group</div>
               <div className="mt-3 text-[var(--muted)]">
                 <span className="text-[var(--accent)]">noah@waterloo</span>:~$ whoami --before
               </div>
-              <div>→ 5× VEX Robotics World Championship, programming lead</div>
-              <div>→ Flutter app used by 3,500+ competitors</div>
+              <div>→ Forward Deployed Engineer, Ascendance Foundry</div>
+              <div>→ 5× VEX Robotics World Championship, team captain & programming lead</div>
+              <div>→ Flutter app used by 3,500+ competitors, Elapse</div>
               <div className="mt-3 flex items-center gap-1.5 text-[var(--muted)]">
                 <span className="text-[var(--accent)]">noah@waterloo</span>:~$
                 <span className="inline-block h-[13px] w-[7px] bg-[var(--muted)] [animation:pulse_1.1s_step-end_infinite]" />
