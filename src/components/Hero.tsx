@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useSectionJump } from "../hooks/useSectionJump";
+import { CONTACT_LINKS } from "../data/profile";
 
 export default function Hero() {
   const navigate = useNavigate();
@@ -51,19 +52,37 @@ export default function Hero() {
 
         <div
           data-reveal="2"
-          className="mt-14 grid grid-cols-[1.05fr_1fr_300px] gap-11 border-t border-[var(--line)] pt-7 opacity-0 [transition:opacity_.9s_ease,transform_.9s_ease]"
+          className="mt-14 grid grid-cols-[1fr_300px] gap-11 border-t border-[var(--line)] pt-7 opacity-0 [transition:opacity_.9s_ease,transform_.9s_ease]"
           style={{ transform: "translateY(20px)" }}
         >
-          <p className="m-0 text-[16.5px] leading-[1.7] font-light text-[var(--muted)] [text-wrap:pretty]">
-            Mechatronics Engineering &rsquo;30 at the University of Waterloo. Currently writing
-            embedded flight software for the Waterloo Aerial Robotics Group — a 32 MB flash
-            driver and RTOS flash translation layer on STM32.
-          </p>
-          <p className="m-0 text-[16.5px] leading-[1.7] font-light text-[var(--muted)] [text-wrap:pretty]">
-            Before that, five consecutive years at the VEX Robotics World Championship as a
-            programming lead, and a Flutter app that 3,500+ competitors use at tournaments.
-          </p>
-          <div className="flex flex-col gap-[10px]">
+          <div className="overflow-hidden rounded-xl border border-[var(--line)] bg-[var(--panel)] [transition:background-color_.5s_ease,border-color_.5s_ease]">
+            <div className="flex items-center gap-[7px] border-b border-[var(--line)] px-4 py-[10px] [transition:border-color_.5s_ease]">
+              <span className="h-[9px] w-[9px] rounded-full bg-[var(--line)]" />
+              <span className="h-[9px] w-[9px] rounded-full bg-[var(--line)]" />
+              <span className="h-[9px] w-[9px] rounded-full bg-[var(--line)]" />
+              <span className="ml-2 font-mono text-[10.5px] tracking-[.08em] text-[var(--muted)]">
+                status.sh
+              </span>
+            </div>
+            <div className="px-5 py-[18px] font-mono text-[13px] leading-[1.9]">
+              <div className="text-[var(--muted)]">
+                <span className="text-[var(--accent)]">noah@waterloo</span>:~$ whoami --now
+              </div>
+              <div>→ Mechatronics Engineering &rsquo;30, University of Waterloo</div>
+              <div>→ Flight software, Waterloo Aerial Robotics Group</div>
+              <div>→ 32 MB flash driver + RTOS flash translation layer, STM32</div>
+              <div className="mt-3 text-[var(--muted)]">
+                <span className="text-[var(--accent)]">noah@waterloo</span>:~$ whoami --before
+              </div>
+              <div>→ 5× VEX Robotics World Championship, programming lead</div>
+              <div>→ Flutter app used by 3,500+ competitors</div>
+              <div className="mt-3 flex items-center gap-1.5 text-[var(--muted)]">
+                <span className="text-[var(--accent)]">noah@waterloo</span>:~$
+                <span className="inline-block h-[13px] w-[7px] bg-[var(--muted)] [animation:pulse_1.1s_step-end_infinite]" />
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-col justify-center gap-[10px]">
             <button
               type="button"
               onClick={() => navigate("/projects")}
@@ -78,15 +97,26 @@ export default function Hero() {
             >
               Résumé<span>↓</span>
             </button>
+
+            <div className="mt-5 border-t border-[var(--line)] pt-4">
+              <div className="mb-1.5 font-mono text-[10px] tracking-[.14em] text-[var(--muted)]">
+                CONNECT WITH ME
+              </div>
+              {CONTACT_LINKS.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  target={link.href.startsWith("http") ? "_blank" : undefined}
+                  rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                  className="flex cursor-pointer justify-between border-b border-[var(--line)] py-[9px] text-[12.5px] [transition:border-color_.5s_ease] last:border-b-0"
+                >
+                  {link.label}
+                  <span className="text-[var(--accent)]">↗</span>
+                </a>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
-
-      <div
-        data-reveal="4"
-        className="absolute bottom-[26px] left-1/2 -ml-10 font-mono text-[9.5px] tracking-[.2em] text-[var(--muted)] opacity-0 [animation:cue_2.6s_ease-in-out_infinite] [transition:opacity_1.1s_ease]"
-      >
-        SCROLL ↓
       </div>
     </div>
   );

@@ -80,12 +80,20 @@ function reveal(el: RevealElement) {
   requestAnimationFrame(() => {
     el.style.transition = base;
   });
-  anim.finished
-    .then(() => {
+  const clear = () => {
+    // Only clear if this animation is still the element's active one — a
+    // cancel() (from a subsequent reveal()/unreveal() call superseding this
+    // one) rejects `finished` too, and without this we'd otherwise leave
+    // will-change/filter dangling on the element forever, which is what was
+    // making fast-toggling elements (elements sitting right at the reveal
+    // threshold, re-triggering before the previous pass finishes) render
+    // permanently blurry.
+    if (el._revealAnim === anim) {
       el.style.willChange = "";
       el.style.filter = "";
-    })
-    .catch(() => {});
+    }
+  };
+  anim.finished.then(clear, clear);
 }
 
 function unreveal(el: RevealElement) {
