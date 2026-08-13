@@ -15,12 +15,3 @@ export interface KeyValue {
 export function toKeyValues(pairs: [string, string][]): KeyValue[] {
   return pairs.map(([k, v]) => ({ k, v }));
 }
-
-export interface LabeledLink {
-  label: string;
-  arrow: string;
-}
-
-export function toLinks(pairs: [string, string][]): LabeledLink[] {
-  return pairs.map(([label, arrow]) => ({ label, arrow }));
-}

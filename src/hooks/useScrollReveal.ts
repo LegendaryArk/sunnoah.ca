@@ -74,12 +74,6 @@ function reveal(el: RevealElement) {
   el._revealAnim = anim;
   el.style.opacity = "1";
   el.style.transform = "none";
-  // Restore the element's own transition (e.g. a theme color fade) on the
-  // next frame, once the instant opacity/transform snap above has committed
-  // — otherwise it would itself trigger a competing CSS transition.
-  requestAnimationFrame(() => {
-    el.style.transition = base;
-  });
   const clear = () => {
     // Only clear if this animation is still the element's active one — a
     // cancel() (from a subsequent reveal()/unreveal() call superseding this
@@ -91,6 +85,13 @@ function reveal(el: RevealElement) {
     if (el._revealAnim === anim) {
       el.style.willChange = "";
       el.style.filter = "";
+      // Restore the element's own transition (e.g. a theme color fade) only
+      // once the reveal animation has actually finished. Restoring it any
+      // earlier re-arms a CSS transition on opacity/transform while the
+      // WAAPI animation is still driving those same properties; it sits
+      // masked until the animation's fill runs out, then plays on its own
+      // — visible as the reveal flickering or fading in a second time.
+      el.style.transition = base;
     }
   };
   anim.finished.then(clear, clear);
@@ -98,6 +99,16 @@ function reveal(el: RevealElement) {
 
 function unreveal(el: RevealElement) {
   if (!el.getAttribute("data-seen")) return;
+  // A reveal that's still actively running (its delay or its duration) is
+  // itself moving the element via `transform` — its "from" position sits
+  // below the element's resting spot by design, for the slide-up effect.
+  // That self-inflicted displacement can momentarily push a borderline
+  // element out of the IntersectionObserver's root, firing a spurious
+  // "not intersecting" callback for an element that never actually left
+  // the viewport. Without this guard that cancels the just-started
+  // animation and restarts it, which is exactly what shows up as the
+  // reveal flickering mid-fade while scrolling.
+  if (el._revealAnim?.playState === "running") return;
   el.removeAttribute("data-seen");
   const base = getBaseTransition(el);
   const v = tweenVars(el);

@@ -9,9 +9,11 @@ export default function Layout() {
   useParallax();
 
   return (
-    <div className="min-h-screen bg-[var(--bg)] text-[var(--text)] transition-colors duration-500">
+    <div className="flex min-h-screen flex-col bg-[var(--bg)] text-[var(--text)] transition-colors duration-500">
       <Nav />
-      <Outlet />
+      <div className="flex-1">
+        <Outlet />
+      </div>
       <Footer />
     </div>
   );

@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "../hooks/useThemeMode";
 import { PROJECTS, type ProjectCategory } from "../data/projects";
-import { numberBullets, toKeyValues, toLinks } from "../lib/list";
+import { numberBullets, toKeyValues } from "../lib/list";
 
 type Filter = "all" | ProjectCategory;
 
@@ -111,7 +111,7 @@ export default function Projects() {
       <div className="grid grid-cols-3 gap-[18px]">
         {visibleProjects.map((p, i) => (
           <div
-            key={p.id}
+            key={`${filter}-${p.id}`}
             onClick={() => openProject(p.id)}
             data-reveal={i}
             data-tween="scale"
@@ -129,8 +129,17 @@ export default function Projects() {
                   backgroundImage:
                     "repeating-linear-gradient(135deg,var(--stripe) 0 2px,transparent 2px 9px)",
                 }}
-              />
-              <span className="relative font-mono text-[9px] text-[var(--muted)]">{p.slot}</span>
+              >
+                {p.img && (
+                  <img
+                    src={p.img}
+                    alt=""
+                    className="absolute inset-0 h-full w-full object-cover"
+                    loading="lazy"
+                  />
+                )}
+              </div>
+              <span className="relative font-mono text-[9px] text-[var(--muted)]">{p.img}</span>
             </div>
             <div className="px-5 pt-[18px] pb-5">
               <div className="mb-[9px] flex items-baseline justify-between">
@@ -224,25 +233,6 @@ export default function Projects() {
                       ))}
                     </div>
                   </div>
-                  <div className="mt-7 border-t border-[var(--line)] pt-6">
-                    <div className="mb-[11px] font-mono text-[10.5px] tracking-[.14em] text-[var(--muted)]">
-                      RELATED LINKS
-                    </div>
-                    <div className="grid max-w-[460px] gap-[9px]">
-                      {[
-                        { label: "Read more", arrow: "→" },
-                        ...toLinks(openProjectData.links),
-                      ].map((l) => (
-                        <span
-                          key={l.label}
-                          className="flex items-center justify-between rounded-[10px] border border-[var(--line)] px-4 py-3.5 text-sm transition-colors duration-250 ease-out hover:bg-[var(--chip)]"
-                        >
-                          {l.label}
-                          <span className="font-mono text-xs text-[var(--accent)]">{l.arrow}</span>
-                        </span>
-                      ))}
-                    </div>
-                  </div>
                 </div>
                 <div className="flex flex-col gap-[18px]">
                   <div className="relative flex h-[190px] items-end overflow-hidden rounded-xl bg-[var(--slot)] p-3">
@@ -252,10 +242,16 @@ export default function Projects() {
                         backgroundImage:
                           "repeating-linear-gradient(135deg,var(--stripe) 0 2px,transparent 2px 9px)",
                       }}
-                    />
-                    <span className="relative font-mono text-[9px] text-[var(--muted)]">
-                      {openProjectData.slot}
-                    </span>
+                    >
+                      {openProjectData.img && (
+                        <img
+                          className="absolute inset-0 h-full w-full object-cover"
+                          src={openProjectData.img}
+                          alt=""
+                          loading="lazy"
+                        />
+                      )}
+                    </div>
                   </div>
                   <div className="relative flex aspect-[4/3] items-end overflow-hidden rounded-xl bg-[var(--slot)] p-3">
                     <div
@@ -280,13 +276,31 @@ export default function Projects() {
                       </div>
                     ))}
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => navigate(`/projects/${openProjectData.id}`)}
-                    className="flex cursor-pointer justify-between rounded-[9px] bg-[var(--accent)] px-4 py-3 text-[13px] font-medium text-white [transition:background-color_.5s_ease]"
-                  >
-                    Read more<span>→</span>
-                  </button>
+                  <div className="grid max-w-[460px] gap-[9px]">
+                    <div className="mb-[4px] font-mono text-[10.5px] tracking-[.14em] text-[var(--muted)]">
+                      RELATED LINKS
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => navigate(`/projects/${openProjectData.id}`)}
+                      className="flex cursor-pointer items-center justify-between rounded-[10px] bg-[var(--accent)] px-4 py-3.5 text-left text-sm font-medium text-white [transition:background-color_.5s_ease]"
+                    >
+                      Read more
+                      <span className="font-mono text-xs">→</span>
+                    </button>
+                    {openProjectData.links.map(([label, link]) => (
+                      <a
+                        key={label}
+                        href={link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-between rounded-[10px] border border-[var(--line)] px-4 py-3.5 text-sm transition-colors duration-250 ease-out hover:bg-[var(--chip)]"
+                      >
+                        {label}
+                        <span className="font-mono text-xs text-[var(--accent)]">↗</span>
+                      </a>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>

@@ -25,8 +25,7 @@ export default function FeaturedProjects() {
               Things I&rsquo;ve built
             </h2>
             <p className="m-0 max-w-[56ch] text-base leading-[1.7] font-light text-[var(--muted)] [text-wrap:pretty]">
-              Robotics, embedded firmware, and full-stack tooling. Three highlights here — six
-              more on the projects page.
+              Robotics, embedded firmware, and full-stack tooling. Three highlights here, more on the projects page.
             </p>
           </div>
           <button
@@ -67,8 +66,16 @@ export default function FeaturedProjects() {
                     backgroundImage:
                       "repeating-linear-gradient(135deg,var(--stripe) 0 2px,transparent 2px 9px)",
                   }}
-                />
-                <span className="relative font-mono text-[9px] text-[var(--muted)]">{p.slot}</span>
+                >
+                  {p.img && (
+                    <img
+                      src={p.img}
+                      alt=""
+                      className="absolute inset-0 h-full w-full object-cover"
+                      loading="lazy"
+                    />
+                  )}
+                </div>
               </div>
               <div className="px-[22px] pt-5 pb-[22px]">
                 <div className="mb-[9px] font-mono text-[10px] tracking-[.13em] text-[var(--accent-text)]">
