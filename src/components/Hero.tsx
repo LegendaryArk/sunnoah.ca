@@ -8,6 +8,12 @@ export default function Hero() {
   const jump = useSectionJump();
   const movesRef = useRef<HTMLSpanElement>(null);
 
+  // While the intro is about to play, this terminal stays hidden — the
+  // loading screen's own terminal card docks into this exact spot and
+  // reveals it the instant its zoom finishes, so there's never a frame
+  // with both terminals visible at once.
+  const introPending = !sessionStorage.getItem("intro-played");
+
   // A CSS transition can't pick up where a :hover-triggered animation left
   // off — per spec its "before" value ignores the animation's contribution,
   // so removing the animation just snaps to rest instead of easing there.
@@ -106,7 +112,11 @@ export default function Hero() {
           className="mt-14 grid grid-cols-[1fr_300px] gap-11 border-t border-[var(--line)] pt-7 opacity-0 [transition:opacity_.9s_ease,transform_.9s_ease]"
           style={{ transform: "translateY(20px)" }}
         >
-          <div className="overflow-hidden rounded-xl border border-[var(--line)] bg-[var(--panel)] [transition:background-color_.5s_ease,border-color_.5s_ease]">
+          <div
+            id="hero-terminal"
+            style={introPending ? { opacity: 0 } : undefined}
+            className="overflow-hidden rounded-xl border border-[var(--line)] bg-[var(--panel)] [transition:background-color_.5s_ease,border-color_.5s_ease]"
+          >
             <div className="flex items-center gap-[7px] border-b border-[var(--line)] px-4 py-[10px] [transition:border-color_.5s_ease]">
               <span className="h-[9px] w-[9px] rounded-full bg-[var(--line)]" />
               <span className="h-[9px] w-[9px] rounded-full bg-[var(--line)]" />
