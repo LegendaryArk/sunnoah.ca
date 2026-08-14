@@ -5,6 +5,7 @@ interface FormState {
   name: string;
   email: string;
   message: string;
+  company: string;
 }
 
 interface FormErrors {
@@ -13,19 +14,21 @@ interface FormErrors {
   message?: string;
 }
 
+type Status = "idle" | "sending" | "sent" | "error";
+
 const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 
 export default function Contact() {
-  const [form, setForm] = useState<FormState>({ name: "", email: "", message: "" });
+  const [form, setForm] = useState<FormState>({ name: "", email: "", message: "", company: "" });
   const [errors, setErrors] = useState<FormErrors>({});
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState<Status>("idle");
 
   const setField = (key: keyof FormState, value: string) => {
     setForm((f) => ({ ...f, [key]: value }));
     setErrors((e) => ({ ...e, [key]: undefined }));
   };
 
-  const submit = (e: FormEvent) => {
+  const submit = async (e: FormEvent) => {
     e.preventDefault();
     const nextErrors: FormErrors = {};
     if (!form.name.trim()) nextErrors.name = "Tell me who you are.";
@@ -35,15 +38,27 @@ export default function Contact() {
     }
     if (Object.keys(nextErrors).length) {
       setErrors(nextErrors);
-    } else {
-      setSent(true);
-      setErrors({});
+      return;
+    }
+    setErrors({});
+    setStatus("sending");
+    try {
+      const res = await fetch(import.meta.env.VITE_CONTACT_API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.ok) throw new Error(data?.error ?? "Failed to send");
+      setStatus("sent");
+    } catch {
+      setStatus("error");
     }
   };
 
   const reset = () => {
-    setSent(false);
-    setForm({ name: "", email: "", message: "" });
+    setStatus("idle");
+    setForm({ name: "", email: "", message: "", company: "" });
     setErrors({});
   };
 
@@ -70,8 +85,17 @@ export default function Contact() {
           style={{ transform: "translateY(22px)" }}
         >
           <div className="rounded-2xl border border-[var(--line)] bg-[var(--bg)] px-8 py-[30px] [transition:background-color_.5s_ease,border-color_.5s_ease]">
-            {!sent ? (
+            {status !== "sent" ? (
               <form onSubmit={submit}>
+                <input
+                  type="text"
+                  value={form.company}
+                  onChange={(e) => setField("company", e.target.value)}
+                  tabIndex={-1}
+                  autoComplete="off"
+                  className="absolute h-0 w-0 opacity-0"
+                  aria-hidden="true"
+                />
                 <div className="grid gap-5">
                   <div>
                     <div className="mb-2 font-mono text-[10.5px] tracking-[.13em] text-[var(--muted)]">
@@ -126,11 +150,18 @@ export default function Contact() {
                     </div>
                   </div>
                 </div>
+                <div
+                  className="mt-4 font-mono text-[10.5px] transition-opacity duration-300 ease-out"
+                  style={{ color: "oklch(0.58 0.17 25)", opacity: status === "error" ? 1 : 0 }}
+                >
+                  {status === "error" && "Something went wrong sending that — please try again."}
+                </div>
                 <button
                   type="submit"
-                  className="mt-6 inline-flex cursor-pointer justify-between rounded-[9px] bg-[var(--accent)] px-[22px] py-[13px] text-[13.5px] font-medium text-white [transition:transform_.25s_ease-out,background-color_.5s_ease] hover:-translate-y-0.5"
+                  disabled={status === "sending"}
+                  className="mt-2 inline-flex cursor-pointer justify-between rounded-[9px] bg-[var(--accent)] px-[22px] py-[13px] text-[13.5px] font-medium text-white [transition:transform_.25s_ease-out,background-color_.5s_ease] hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0"
                 >
-                  Send message →
+                  {status === "sending" ? "Sending…" : "Send message →"}
                 </button>
               </form>
             ) : (
