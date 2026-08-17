@@ -1,4 +1,4 @@
-# legendaryark.github.io
+# sunnoah.ca
 
 Personal portfolio site for Noah Sun, built with React, TypeScript, and Tailwind CSS. Deployed on GitHub Pages at [sunnoah.ca](https://sunnoah.ca).
 

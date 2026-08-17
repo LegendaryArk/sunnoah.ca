@@ -41,7 +41,7 @@ export const PROJECTS: Project[] = [
     ],
     stack: ["React", "TypeScript", "Vite", "Tailwind CSS", "shadcn/ui", "Radix UI", "React Router"],
     links: [
-      ["GitHub repo", "https://github.com/LegendaryArk/legendaryark.github.io"],
+      ["GitHub repo", "https://github.com/LegendaryArk/sunnoah.ca"],
       ["Deployment", "https://sunnoah.ca"]
     ],
     img: "",
