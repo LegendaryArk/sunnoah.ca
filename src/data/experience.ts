@@ -26,7 +26,7 @@ export const EXPERIENCES: Experience[] = [
     stats: [],
     stack: ["C#", "Python"],
     links: [
-      ["Company site", "https://www.tvfi.ca/"],
+      ["Company", "https://www.tvfi.ca/"],
     ],
     img: "",
   },
