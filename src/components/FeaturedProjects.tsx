@@ -67,9 +67,9 @@ export default function FeaturedProjects() {
                       "repeating-linear-gradient(135deg,var(--stripe) 0 2px,transparent 2px 9px)",
                   }}
                 >
-                  {p.img && (
+                  {p.imgs && p.imgs[0] && (
                     <img
-                      src={p.img}
+                      src={p.imgs[0]}
                       alt=""
                       className="absolute inset-0 h-full w-full object-cover"
                       loading="lazy"

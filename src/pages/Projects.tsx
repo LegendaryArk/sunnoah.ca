@@ -16,6 +16,7 @@ const FILTERS: { id: Filter; label: string }[] = [
 
 // How long the zoom-out takes before the overlay actually unmounts.
 const CLOSE_MS = 260;
+const LIGHTBOX_CLOSE_MS = 380;
 
 export default function Projects() {
   const navigate = useNavigate();
@@ -24,6 +25,15 @@ export default function Projects() {
   const [mounted, setMounted] = useState(false);
   const [visible, setVisible] = useState(false);
   const closeTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
+
+  const [lightboxData, setLightboxData] = useState<{
+    imgs: string[];
+    index: number;
+    originRect: DOMRect;
+  } | null>(null);
+  const [lightboxMounted, setLightboxMounted] = useState(false);
+  const [lightboxVisible, setLightboxVisible] = useState(false);
+  const lightboxCloseTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   const openProject = (id: string) => {
     clearTimeout(closeTimer.current);
@@ -44,7 +54,28 @@ export default function Projects() {
     }, CLOSE_MS);
   };
 
-  useEffect(() => () => clearTimeout(closeTimer.current), []);
+  const openLightbox = (imgs: string[], index: number, originRect: DOMRect) => {
+    clearTimeout(lightboxCloseTimer.current);
+    setLightboxData({ imgs, index, originRect });
+    setLightboxMounted(true);
+    requestAnimationFrame(() => requestAnimationFrame(() => setLightboxVisible(true)));
+  };
+
+  const closeLightbox = () => {
+    setLightboxVisible(false);
+    clearTimeout(lightboxCloseTimer.current);
+    lightboxCloseTimer.current = setTimeout(() => {
+      setLightboxMounted(false);
+      setLightboxData(null);
+    }, LIGHTBOX_CLOSE_MS);
+  };
+
+  useEffect(() => {
+    return () => {
+      clearTimeout(closeTimer.current);
+      clearTimeout(lightboxCloseTimer.current);
+    };
+  }, []);
 
   // Always land at the top of the projects grid, regardless of where the
   // page was scrolled to on whatever page linked here.
@@ -55,7 +86,10 @@ export default function Projects() {
   useEffect(() => {
     if (!mounted) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") closeProject();
+      if (e.key !== "Escape") return;
+      // Escape closes whichever layer is on top first.
+      if (lightboxMounted) closeLightbox();
+      else closeProject();
     };
     document.addEventListener("keydown", onKey);
     const prevOverflow = document.body.style.overflow;
@@ -65,7 +99,7 @@ export default function Projects() {
       document.body.style.overflow = prevOverflow;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mounted]);
+  }, [mounted, lightboxMounted]);
 
   const visibleProjects = PROJECTS.filter((p) => filter === "all" || p.cat === filter);
   const openProjectData = openId ? PROJECTS.find((p) => p.id === openId) : undefined;
@@ -130,16 +164,15 @@ export default function Projects() {
                     "repeating-linear-gradient(135deg,var(--stripe) 0 2px,transparent 2px 9px)",
                 }}
               >
-                {p.img && (
+                {p.imgs && p.imgs[0] && (
                   <img
-                    src={p.img}
+                    src={p.imgs[0]}
                     alt=""
                     className="absolute inset-0 h-full w-full object-cover"
                     loading="lazy"
                   />
                 )}
               </div>
-              <span className="relative font-mono text-[9px] text-[var(--muted)]">{p.img}</span>
             </div>
             <div className="px-5 pt-[18px] pb-5">
               <div className="mb-[9px] flex items-baseline justify-between">
@@ -219,7 +252,16 @@ export default function Projects() {
                     ))}
                   </div>
                   <div className="mt-[30px] border-t border-[var(--line)] pt-6">
-                    <div className="mb-[11px] font-mono text-[10.5px] tracking-[.14em] text-[var(--muted)]">
+                    <ImageCarousel
+                      key={openProjectData.id}
+                      imgs={openProjectData.imgs}
+                      onOpen={(index, rect) => openLightbox(openProjectData.imgs, index, rect)}
+                    />
+                  </div>
+                </div>
+                <div className="flex flex-col gap-[18px]">
+                  
+                  <div className="mb-[-8px] font-mono text-[10.5px] tracking-[.14em] text-[var(--muted)]">
                       STACK
                     </div>
                     <div className="flex flex-wrap gap-2">
@@ -232,39 +274,6 @@ export default function Projects() {
                         </span>
                       ))}
                     </div>
-                  </div>
-                </div>
-                <div className="flex flex-col gap-[18px]">
-                  <div className="relative flex h-[190px] items-end overflow-hidden rounded-xl bg-[var(--slot)] p-3">
-                    <div
-                      className="absolute inset-0"
-                      style={{
-                        backgroundImage:
-                          "repeating-linear-gradient(135deg,var(--stripe) 0 2px,transparent 2px 9px)",
-                      }}
-                    >
-                      {openProjectData.img && (
-                        <img
-                          className="absolute inset-0 h-full w-full object-cover"
-                          src={openProjectData.img}
-                          alt=""
-                          loading="lazy"
-                        />
-                      )}
-                    </div>
-                  </div>
-                  <div className="relative flex aspect-[4/3] items-end overflow-hidden rounded-xl bg-[var(--slot)] p-3">
-                    <div
-                      className="absolute inset-0"
-                      style={{
-                        backgroundImage:
-                          "repeating-linear-gradient(135deg,var(--stripe) 0 2px,transparent 2px 9px)",
-                      }}
-                    />
-                    <span className="relative font-mono text-[9px] text-[var(--muted)]">
-                      [ SECOND SCREENSHOT ]
-                    </span>
-                  </div>
                   <div className="grid border-t border-[var(--line)]">
                     {toKeyValues(openProjectData.stats).map((s) => (
                       <div
@@ -308,6 +317,228 @@ export default function Projects() {
           </div>,
           document.body,
         )}
+
+      {lightboxMounted &&
+        lightboxData &&
+        createPortal(
+          <Lightbox
+            imgs={lightboxData.imgs}
+            startIndex={lightboxData.index}
+            originRect={lightboxData.originRect}
+            visible={lightboxVisible}
+            onClose={closeLightbox}
+          />,
+          document.body,
+        )}
+    </div>
+  );
+}
+
+function ImageSlides({
+  imgs,
+  index,
+  imgClassName = "object-cover",
+  onImageClick,
+}: {
+  imgs: string[];
+  index: number;
+  imgClassName?: string;
+  onImageClick?: (index: number, rect: DOMRect) => void;
+}) {
+  return (
+    <div
+      className="flex h-full"
+      style={{
+        transform: `translateX(-${index * 100}%)`,
+        transition: "transform 460ms cubic-bezier(.2,.7,.2,1)",
+      }}
+    >
+      {imgs.map((src, i) => (
+        <img
+          key={src}
+          src={src}
+          alt=""
+          loading="lazy"
+          onClick={
+            onImageClick
+              ? (e) => onImageClick(i, (e.currentTarget as HTMLImageElement).getBoundingClientRect())
+              : undefined
+          }
+          className={`h-full w-full shrink-0 ${imgClassName} ${onImageClick ? "cursor-zoom-in" : ""}`}
+        />
+      ))}
+    </div>
+  );
+}
+
+function CarouselNav({
+  imgs,
+  index,
+  onPrev,
+  onNext,
+  onDot,
+  size = "sm",
+}: {
+  imgs: string[];
+  index: number;
+  onPrev: () => void;
+  onNext: () => void;
+  onDot: (i: number) => void;
+  size?: "sm" | "lg";
+}) {
+  const btnSize = size === "lg" ? "h-11 w-11 text-lg" : "h-8 w-8";
+  return (
+    <>
+      <button
+        type="button"
+        onClick={onPrev}
+        aria-label="Previous image"
+        className={`absolute top-1/2 left-2 z-10 grid -translate-y-1/2 cursor-pointer place-items-center rounded-full bg-black/50 text-white backdrop-blur-sm transition-colors hover:bg-black/70 ${btnSize}`}
+      >
+        ‹
+      </button>
+      <button
+        type="button"
+        onClick={onNext}
+        aria-label="Next image"
+        className={`absolute top-1/2 right-2 z-10 grid -translate-y-1/2 cursor-pointer place-items-center rounded-full bg-black/50 text-white backdrop-blur-sm transition-colors hover:bg-black/70 ${btnSize}`}
+      >
+        ›
+      </button>
+      <div className="absolute bottom-2.5 left-1/2 z-10 flex -translate-x-1/2 gap-1.5">
+        {imgs.map((src, i) => (
+          <button
+            key={src}
+            type="button"
+            onClick={() => onDot(i)}
+            aria-label={`Go to image ${i + 1}`}
+            className="h-1.5 w-1.5 cursor-pointer rounded-full transition-[background-color]"
+            style={{ background: i === index ? "#fff" : "rgba(255,255,255,.4)" }}
+          />
+        ))}
+      </div>
+    </>
+  );
+}
+
+function ImageCarousel({
+  imgs,
+  onOpen,
+}: {
+  imgs: string[];
+  onOpen: (index: number, rect: DOMRect) => void;
+}) {
+  const [index, setIndex] = useState(0);
+  const hasImages = imgs.length > 0;
+  const multi = imgs.length > 1;
+
+  const prev = () => setIndex((i) => (i - 1 + imgs.length) % imgs.length);
+  const next = () => setIndex((i) => (i + 1) % imgs.length);
+
+  return (
+    <div className="relative flex aspect-[4/3] items-end overflow-hidden rounded-xl bg-[var(--slot)] p-3">
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundImage:
+            "repeating-linear-gradient(135deg,var(--stripe) 0 2px,transparent 2px 9px)",
+        }}
+      />
+
+      {hasImages && (
+        <div className="absolute inset-0">
+          <ImageSlides imgs={imgs} index={index} onImageClick={onOpen} />
+        </div>
+      )}
+
+      {multi && <CarouselNav imgs={imgs} index={index} onPrev={prev} onNext={next} onDot={setIndex} />}
+    </div>
+  );
+}
+
+function Lightbox({
+  imgs,
+  startIndex,
+  originRect,
+  visible,
+  onClose,
+}: {
+  imgs: string[];
+  startIndex: number;
+  originRect: DOMRect;
+  visible: boolean;
+  onClose: () => void;
+}) {
+  const [current, setCurrent] = useState(startIndex);
+  const multi = imgs.length > 1;
+
+  const prev = () => setCurrent((i) => (i - 1 + imgs.length) % imgs.length);
+  const next = () => setCurrent((i) => (i + 1) % imgs.length);
+
+  useEffect(() => {
+    if (!multi) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft") prev();
+      else if (e.key === "ArrowRight") next();
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [multi, imgs.length]);
+
+  // The viewer box is centered in the viewport at a fixed size; the closed
+  // (thumbnail) state is derived analytically from that box vs. the
+  // clicked image's rect, so no ref measurement / layout effect is needed —
+  // it's a pure FLIP transform driven by the `visible` flag.
+  const targetW = Math.min(window.innerWidth * 0.9, 1200);
+  const targetH = Math.min(window.innerHeight * 0.82, 820);
+  const originCx = originRect.left + originRect.width / 2;
+  const originCy = originRect.top + originRect.height / 2;
+  const viewportCx = window.innerWidth / 2;
+  const viewportCy = window.innerHeight / 2;
+  const scaleX = originRect.width / targetW;
+  const scaleY = originRect.height / targetH;
+  const dx = originCx - viewportCx;
+  const dy = originCy - viewportCy;
+  const closedTransform = `translate(${dx}px, ${dy}px) scale(${scaleX}, ${scaleY})`;
+
+  return (
+    <div
+      onClick={onClose}
+      className="fixed inset-0 z-[70] flex items-center justify-center"
+      style={{
+        background: "rgba(6,9,11,.82)",
+        backdropFilter: "blur(10px)",
+        WebkitBackdropFilter: "blur(10px)",
+        opacity: visible ? 1 : 0,
+        transition: "opacity 260ms ease",
+      }}
+    >
+      <button
+        type="button"
+        onClick={onClose}
+        aria-label="Close"
+        className="absolute top-5 right-6 z-10 cursor-pointer font-mono text-[13px] tracking-[.1em] text-white/80 transition-colors hover:text-white"
+      >
+        CLOSE ✕
+      </button>
+
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="relative overflow-hidden rounded-xl bg-black"
+        style={{
+          width: targetW,
+          height: targetH,
+          transform: visible ? "translate(0,0) scale(1,1)" : closedTransform,
+          opacity: visible ? 1 : 0.5,
+          transition: "transform 400ms cubic-bezier(.2,.7,.2,1), opacity 300ms ease",
+        }}
+      >
+        <ImageSlides imgs={imgs} index={current} imgClassName="object-contain" />
+        {multi && (
+          <CarouselNav imgs={imgs} index={current} onPrev={prev} onNext={next} onDot={setCurrent} size="lg" />
+        )}
+      </div>
     </div>
   );
 }

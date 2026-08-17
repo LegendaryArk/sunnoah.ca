@@ -13,10 +13,61 @@ export interface Project {
   stats: [string, string][];
   stack: string[];
   links: [string, string][];
-  img: string;
+  imgs: string[];
 }
 
 export const PROJECTS: Project[] = [
+  {
+    id: "decks",
+    name: "Decks",
+    year: "2026",
+    cat: "embedded",
+    kicker: "PWM · PICO",
+    meta: "RASPBERRY PI PICO · PWM MOTOR CONTROL · C",
+    short: "A hardware card-shuffling device driven by a Raspberry Pi Pico, using PWM-controlled motors to feed and mix a deck automatically.",
+    blurb:
+      "Decks is an embedded hardware project that automates shuffling a deck of cards using a Raspberry Pi Pico for motor control. It drives a DC motor through PWM at a tuned frequency and duty cycle to move cards through the shuffling mechanism, with dedicated forward/reverse/stop routines and a CMake-based build targeting the Pico SDK.",
+    bullets: [
+      "PWM-based DC motor control tuned for consistent card feed speed",
+      "Forward, reverse, and stop motor routines for mechanical shuffling motion",
+      "Built on the Raspberry Pi Pico SDK with a CMake build system",
+    ],
+    stats: [
+      ["MCU", "RPi Pico"],
+      ["CONTROL", "PWM Motor Driver"],
+      ["FIRMWARE", "C"],
+    ],
+    stack: ["C", "Raspberry Pi Pico", "OnShape", "3D Printing", "PWM Motor Control"],
+    links: [
+      ["GitHub repo", "https://github.com/LegendaryArk/CardShuffler"],
+    ],
+    imgs: [],
+  },
+  {
+    id: "vexdex",
+    name: "VexDex",
+    year: "2026",
+    cat: "software",
+    kicker: "DATA · AZURE SQL",
+    meta: "PROJECT · 2025",
+    short: "8k+ data points over 40+ metrics, sub-100 ms queries on a composite-key schema.",
+    blurb:
+      "A competition data analysis service: a relational schema tuned for fast lookups behind a FastAPI surface.",
+    bullets: [
+      "Built full-stack competition data analysis with FastAPI endpoints, managing 8k+ data points over 40+ metrics",
+      "Engineered a composite-key relational schema with indexing in Azure SQL, reducing database query time to <100 ms",
+    ],
+    stats: [
+      ["DATA POINTS", "8k+"],
+      ["METRICS", "40+"],
+      ["QUERY TIME", "<100 ms"],
+    ],
+    stack: ["FastAPI", "Azure SQL", "Python", "Pandas"],
+    links: [
+      ["GitHub repo", "https://github.com/elapse-app/VexDex"],
+    ],
+    imgs: [],
+  },
   {
     id: "portfolio-redesign",
     name: "Personal Portfolio (Redesign)",
@@ -44,7 +95,7 @@ export const PROJECTS: Project[] = [
       ["GitHub repo", "https://github.com/LegendaryArk/sunnoah.ca"],
       ["Deployment", "https://sunnoah.ca"]
     ],
-    img: "",
+    imgs: ["sunnoah.ca_redesign.png", "sunnoah.ca_redesign_projects.png"],
   },
   {
     id: "redact",
@@ -73,7 +124,7 @@ export const PROJECTS: Project[] = [
       ["GitHub repo", "https://github.com/LegendaryArk/Redact"],
       ["Deployment", "https://redact.sunnoah.ca"]
     ],
-    img: "",
+    imgs: ["redact_res.png", "redact_ui.png"],
   },
   {
     id: "autofleet",
@@ -102,7 +153,7 @@ export const PROJECTS: Project[] = [
     links: [
       ["GitHub repo", "https://github.com/LegendaryArk/TIC_AutoFleet"],
     ],
-    img: "autofleet_robot.jpg",
+    imgs: ["autofleet_robot.jpg", "autofleet_dashboard.png"],
   },
   {
     id: "signal",
@@ -132,33 +183,7 @@ export const PROJECTS: Project[] = [
       ["GitHub repo", "https://github.com/LegendaryArk/Signal"],
       ["Live demo", ""],
     ],
-    img: "",
-  },
-  {
-    id: "decks",
-    name: "Decks",
-    year: "2026",
-    cat: "embedded",
-    kicker: "PWM · PICO",
-    meta: "RASPBERRY PI PICO · PWM MOTOR CONTROL · C",
-    short: "A hardware card-shuffling device driven by a Raspberry Pi Pico, using PWM-controlled motors to feed and mix a deck automatically.",
-    blurb:
-      "Decks is an embedded hardware project that automates shuffling a deck of cards using a Raspberry Pi Pico for motor control. It drives a DC motor through PWM at a tuned frequency and duty cycle to move cards through the shuffling mechanism, with dedicated forward/reverse/stop routines and a CMake-based build targeting the Pico SDK.",
-    bullets: [
-      "PWM-based DC motor control tuned for consistent card feed speed",
-      "Forward, reverse, and stop motor routines for mechanical shuffling motion",
-      "Built on the Raspberry Pi Pico SDK with a CMake build system",
-    ],
-    stats: [
-      ["MCU", "RPi Pico"],
-      ["CONTROL", "PWM Motor Driver"],
-      ["FIRMWARE", "C"],
-    ],
-    stack: ["C", "Raspberry Pi Pico", "OnShape", "3D Printing", "PWM Motor Control"],
-    links: [
-      ["GitHub repo", "https://github.com/LegendaryArk/CardShuffler"],
-    ],
-    img: "",
+    imgs: ["signal.png", "signal_res.png"],
   },
   {
     id: "citywatch",
@@ -198,7 +223,7 @@ export const PROJECTS: Project[] = [
     links: [
       ["GitHub repo", "https://github.com/LegendaryArk/CityWatch"],
     ],
-    img: "citywatch.png",
+    imgs: ["citywatch.png"],
   },
   {
     id: "paperfolder",
@@ -226,7 +251,7 @@ export const PROJECTS: Project[] = [
       ["GitHub repo", "https://github.com/LegendaryArk/Paper-Folder-Bot"],
       ["Demo video", "https://youtu.be/K6T1ojHrifk?si=xwwbdwTEUAyVA40S"],
     ],
-    img: "paperfolder.jpg",
+    imgs: ["paperfolder.jpg"],
   },
   {
     id: "nav",
@@ -254,7 +279,7 @@ export const PROJECTS: Project[] = [
       ["GitHub repo", "https://github.com/LegendaryArk/wato_asd_training"],
       ["Demo video", "https://youtu.be/CKogSlk9C5I?si=1ZS_dvz-jcXbfBjl"],
     ],
-    img: "ans.jpg",
+    imgs: ["ans.jpg"],
   },
   {
     id: "portfolio-original",
@@ -280,7 +305,7 @@ export const PROJECTS: Project[] = [
     ],
     stack: ["React", "TypeScript", "Vite", "Tailwind CSS", "shadcn/ui", "Radix UI", "React Router"],
     links: [],
-    img: "",
+    imgs: ["sunnoah.ca_original.png"],
   },
   {
     id: "elapse",
@@ -308,32 +333,7 @@ export const PROJECTS: Project[] = [
     links: [
       ["GitHub repo", "https://github.com/LegendaryArk/VexDex"],
     ],
-    img: "elapse.png",
-  },
-  {
-    id: "vexdex",
-    name: "VexDex",
-    year: "2025",
-    cat: "software",
-    kicker: "DATA · AZURE SQL",
-    meta: "PROJECT · 2025",
-    short: "8k+ data points over 40+ metrics, sub-100 ms queries on a composite-key schema.",
-    blurb:
-      "A competition data analysis service: a relational schema tuned for fast lookups behind a FastAPI surface.",
-    bullets: [
-      "Built full-stack competition data analysis with FastAPI endpoints, managing 8k+ data points over 40+ metrics",
-      "Engineered a composite-key relational schema with indexing in Azure SQL, reducing database query time to <100 ms",
-    ],
-    stats: [
-      ["DATA POINTS", "8k+"],
-      ["METRICS", "40+"],
-      ["QUERY TIME", "<100 ms"],
-    ],
-    stack: ["FastAPI", "Azure SQL", "Python", "Pandas"],
-    links: [
-      ["GitHub repo", "https://github.com/LegendaryArk/VexDex"],
-    ],
-    img: "",
+    imgs: ["elapse.png"],
   },
   {
     id: "arklib",
@@ -363,7 +363,7 @@ export const PROJECTS: Project[] = [
     links: [
       ["GitHub repo", "https://github.com/LegendaryArk/VRC2425-HighStakes"],
     ],
-    img: "checkmate.png",
+    imgs: ["checkmate.png"],
   },
   {
     id: "mentorful",
@@ -391,7 +391,7 @@ export const PROJECTS: Project[] = [
     links: [
       ["GitHub repo", "https://github.com/LegendaryArk/Mentorful"],
     ],
-    img: "mentorful.png",
+    imgs: ["mentorful.png"],
   },
   {
     id: "boggle",
@@ -420,6 +420,6 @@ export const PROJECTS: Project[] = [
     links: [
       ["GitHub repo", "https://github.com/LegendaryArk/Boggle"],
     ],
-    img: "boggle.png",
+    imgs: ["boggle.png"],
   },
 ];
