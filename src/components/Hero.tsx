@@ -127,19 +127,19 @@ export default function Hero() {
             </div>
             <div className="px-5 py-[18px] font-mono text-[13px] leading-[1.9]">
               <div className="text-[var(--muted)]">
-                <span className="text-[var(--accent)]">noah@waterloo</span>:~$ whoami --now
+                <span className="text-[var(--accent)]">noah@uwaterloo</span>:~$ whoami --now
               </div>
               <div>→ Mechatronics Engineering &rsquo;30, University of Waterloo</div>
               <div>→ Full Stack Software Engineer, Thames Valley Financial Inc.</div>
               <div>→ Embedded Flight Software Developer, Waterloo Aerial Robotics Group</div>
               <div className="mt-3 text-[var(--muted)]">
-                <span className="text-[var(--accent)]">noah@waterloo</span>:~$ whoami --before
+                <span className="text-[var(--accent)]">noah@uwaterloo</span>:~$ whoami --before
               </div>
               <div>→ Forward Deployed Engineer, Ascendance Foundry</div>
               <div>→ 5× VEX Robotics World Championship, team captain & programming lead</div>
               <div>→ Flutter app used by 3,500+ competitors, Elapse</div>
               <div className="mt-3 flex items-center gap-1.5 text-[var(--muted)]">
-                <span className="text-[var(--accent)]">noah@waterloo</span>:~$
+                <span className="text-[var(--accent)]">noah@uwaterloo</span>:~$
                 <span className="inline-block h-[13px] w-[7px] bg-[var(--muted)] [animation:pulse_1.1s_step-end_infinite]" />
               </div>
             </div>

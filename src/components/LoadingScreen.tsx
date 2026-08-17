@@ -23,12 +23,12 @@ const STEPS: Step[] = [
   {
     user: "you@local",
     accentUser: false,
-    command: "ssh noah@waterloo",
+    command: "ssh noah@uwaterloo",
     output: ["→ Connecting...", "→ Authenticating...", "→ Welcome, noah."],
     extraPause: { 0: 400, 1: 600 },
   },
   {
-    user: "noah@waterloo",
+    user: "noah@uwaterloo",
     accentUser: true,
     command: "./status.sh",
     output: [],
@@ -36,7 +36,7 @@ const STEPS: Step[] = [
     titleAfter: "status.sh",
   },
   {
-    user: "noah@waterloo",
+    user: "noah@uwaterloo",
     accentUser: true,
     command: "whoami --now",
     output: [
@@ -46,7 +46,7 @@ const STEPS: Step[] = [
     ],
   },
   {
-    user: "noah@waterloo",
+    user: "noah@uwaterloo",
     accentUser: true,
     command: "whoami --before",
     output: [
