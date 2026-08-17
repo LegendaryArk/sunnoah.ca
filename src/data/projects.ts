@@ -14,6 +14,7 @@ export interface Project {
   stack: string[];
   links: [string, string][];
   imgs: string[];
+  wip?: boolean;
 }
 
 export const PROJECTS: Project[] = [
@@ -42,6 +43,7 @@ export const PROJECTS: Project[] = [
       ["GitHub repo", "https://github.com/LegendaryArk/CardShuffler"],
     ],
     imgs: [],
+    wip: true,
   },
   {
     id: "vexdex",
@@ -67,6 +69,7 @@ export const PROJECTS: Project[] = [
       ["GitHub repo", "https://github.com/elapse-app/VexDex"],
     ],
     imgs: [],
+    wip: true,
   },
   {
     id: "portfolio-redesign",

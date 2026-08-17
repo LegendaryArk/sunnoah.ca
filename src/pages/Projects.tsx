@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useTheme } from "../hooks/useThemeMode";
 import { PROJECTS, type ProjectCategory } from "../data/projects";
 import { numberBullets, toKeyValues } from "../lib/list";
+import WipPill from "../components/WipPill";
 
 type Filter = "all" | ProjectCategory;
 
@@ -181,7 +182,10 @@ export default function Projects() {
                 </span>
                 <span className="font-mono text-[10px] text-[var(--muted)]">{p.year}</span>
               </div>
-              <div className="mb-2 text-lg font-medium tracking-[-.02em]">{p.name}</div>
+              <div className="mb-2 flex items-center gap-2">
+                <span className="text-lg font-medium tracking-[-.02em]">{p.name}</span>
+                {p.wip && <WipPill />}
+              </div>
               <p className="m-0 mb-3.5 text-[13px] leading-[1.6] font-light text-[var(--muted)]">
                 {p.short}
               </p>
@@ -232,9 +236,12 @@ export default function Projects() {
             <div className="px-[34px] pt-8 pb-9">
               <div className="grid grid-cols-[1fr_320px] gap-11">
                 <div>
-                  <h3 className="m-0 mb-2 text-[40px] font-normal tracking-[-.038em]">
-                    {openProjectData.name}
-                  </h3>
+                  <div className="mb-2 flex items-center gap-3">
+                    <h3 className="m-0 text-[40px] font-normal tracking-[-.038em]">
+                      {openProjectData.name}
+                    </h3>
+                    {openProjectData.wip && <WipPill />}
+                  </div>
                   <div className="mb-6 font-mono text-[10.5px] tracking-[.13em] text-[var(--accent-text)]">
                     {openProjectData.meta}
                   </div>

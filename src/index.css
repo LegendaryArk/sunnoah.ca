@@ -16,6 +16,9 @@
   --indicator: #10161a;
   --slot: linear-gradient(#eef2f4, #e4eaee);
   --stripe: rgba(16, 22, 26, 0.05);
+  --warn: oklch(0.62 0.16 70);
+  --warn-text: oklch(0.44 0.14 70);
+  --warn-soft: oklch(0.95 0.04 70);
 }
 
 [data-theme="dark"] {
@@ -34,6 +37,9 @@
   --indicator: oklch(0.76 0.12 225);
   --slot: linear-gradient(#1b242a, #151d22);
   --stripe: rgba(233, 238, 241, 0.055);
+  --warn: oklch(0.78 0.15 70);
+  --warn-text: oklch(0.8 0.13 70);
+  --warn-soft: rgba(230, 170, 90, 0.15);
 }
 
 /* Layered (rather than plain global rules) so these lose to Tailwind

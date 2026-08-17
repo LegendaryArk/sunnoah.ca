@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { PROJECTS } from "../data/projects";
 import { saveHomeScroll } from "../lib/scrollMemory";
+import WipPill from "./WipPill";
 
 export default function FeaturedProjects() {
   const navigate = useNavigate();
@@ -81,7 +82,10 @@ export default function FeaturedProjects() {
                 <div className="mb-[9px] font-mono text-[10px] tracking-[.13em] text-[var(--accent-text)]">
                   {p.kicker}
                 </div>
-                <div className="mb-2 text-[19px] font-medium tracking-[-.02em]">{p.name}</div>
+                <div className="mb-2 flex items-center gap-2">
+                  <span className="text-[19px] font-medium tracking-[-.02em]">{p.name}</span>
+                  {p.wip && <WipPill />}
+                </div>
                 <p className="m-0 mb-3.5 text-[13px] leading-[1.6] font-light text-[var(--muted)]">
                   {p.short}
                 </p>
