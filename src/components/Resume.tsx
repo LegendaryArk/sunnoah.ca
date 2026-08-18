@@ -6,10 +6,28 @@ export default function Resume() {
   const { theme } = useTheme();
   const [resumeId, setResumeId] = useState(RESUMES[0].id);
   const [resumeReady, setResumeReady] = useState(false);
+  const [resumeLastUpdated, setResumeLastUpdated] = useState<Date | null>(null);
   const hostRef = useRef<HTMLDivElement>(null);
 
   const resume = RESUMES.find((r) => r.id === resumeId) ?? RESUMES[0];
+
   const dark = theme === "dark";
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/resumes/last_updated.json")
+      .then((res) => res.json())
+      .then((data) => {
+        if (!cancelled) setResumeLastUpdated(new Date(data.last_updated));
+      })
+      .catch(() => {
+        if (!cancelled) setResumeLastUpdated(null);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   // PDF iframes grab focus and drag the page down to this section on load,
   // so the src stays about:blank until the section scrolls into view.
@@ -83,7 +101,7 @@ export default function Resume() {
         <div className="overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--panel)] shadow-[0_10px_34px_var(--shadow)] [transition:background-color_.5s_ease,border-color_.5s_ease]">
           <div className="flex items-center justify-between border-b border-[var(--line)] px-[18px] py-[13px] font-mono text-[10.5px] tracking-[.12em] text-[var(--muted)]">
             <span>{resume.file}</span>
-            <span>UPDATED AUG 2026</span>
+            <span>UPDATED {resumeLastUpdated?.toLocaleDateString('en-US', { month: 'short', year: 'numeric' }).toLocaleUpperCase() || "AUG 2026"}</span>
           </div>
           <iframe
             src={resumeReady ? `${resume.src}#pagemode=none&navpanes=0&toolbar=0` : "about:blank"}
