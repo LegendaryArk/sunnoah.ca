@@ -14,7 +14,7 @@ export const RESUMES: ResumeVariant[] = [
     tab: "ROBOTICS / EMBEDDED",
     title: "Robotics & Embedded",
     file: "noah_sun_resume_robotics.pdf",
-    src: "/noah_sun_resume_robotics.pdf",
+    src: "/resumes/noah_sun_resume_robotics.pdf",
     note: "Leads with multi-robot coordination, LiDAR navigation, and firmware. Best fit for robotics and hardware teams.",
     highlights: [
       ["LEADS WITH", "AutoFleet · Nav stack"],
@@ -27,7 +27,7 @@ export const RESUMES: ResumeVariant[] = [
     tab: "SOFTWARE / DATA",
     title: "Software & Data",
     file: "noah_sun_resume_software.pdf",
-    src: "/noah_sun_resume_software.pdf",
+    src: "/resumes/noah_sun_resume_software.pdf",
     note: "Leads with the LLM agent platform, ETL and data work, and the full-stack projects. Best fit for SWE and data internships.",
     highlights: [
       ["LEADS WITH", "Signal · CityWatch"],
