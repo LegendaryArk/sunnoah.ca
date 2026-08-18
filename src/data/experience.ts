@@ -43,9 +43,7 @@ export const EXPERIENCES: Experience[] = [
       "Built an RTOS-integrated Flash Translation Layer with garbage collection and wear leveling, enhancing flash longevity",
     ],
     stats: [
-      ["ROLE", "Lead"],
-      ["TEAM", "4 engineers"],
-      ["TARGET", "STM32 Nucleo"],
+      ["MCU", "STM32 Nucleo"],
       ["STORAGE", "32 MB flash"],
     ],
     stack: ["C++", "STM32", "RTOS", "SPI", "Foxglove", "Git"],
@@ -70,7 +68,6 @@ export const EXPERIENCES: Experience[] = [
     ],
     stats: [
       ["AUTOMATIONS", "5"],
-      ["ERROR REDUCTION", "80%"],
       ["Data PIPELINES", "2"],
     ],
     stack: ["Python", "Playwright", "Claude API", "Azure Data Factory", "Power BI"],
@@ -93,8 +90,6 @@ export const EXPERIENCES: Experience[] = [
     stats: [
       ["DOWNLOADS", "3,500+"],
       ["RATING", "5.0 ★"],
-      ["REACH", "100k members"],
-      ["PRODUCTIVITY", "+35%"],
     ],
     stack: ["Flutter", "Dart", "Firebase", "Cloud Functions"],
     links: [
@@ -111,15 +106,14 @@ export const EXPERIENCES: Experience[] = [
     org: "Checkmate Robotics",
     meta: "EXPERIENCE · JUN 2019 — AUG 2025 · TEAM OF 6",
     blurb:
-      "Six years of competitive robotics: robot design, library architecture, and the control tuning that put the team at the World Championship five years running.",
+      "Six years of competitive robotics: robot design, library architecture, and the control tuning that brought the team to the World Championship five years in a row.",
     bullets: [
       "Led team of 6 in robot design and library architecture, winning the Create (innovation) Award at VEX Worlds 2024",
       "Engineered ArkLib, a modular C++ motion control library focused on scalability and flexibility using OOP, qualifying the team to VEX Worlds in 5 consecutive years and winning the Think (programming) Award at international events",
       "Designed and tuned PID and control algorithms, achieving 1”/1° precision movements across 300+ matches",
     ],
     stats: [
-      ["WORLDS", "5 consecutive"],
-      ["PRECISION", "1″ / 1°"],
+      ["WORLDS", "5 years consecutive"],
       ["MATCHES", "300+"],
       ["TEAM", "6"],
     ],

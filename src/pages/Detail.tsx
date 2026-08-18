@@ -12,7 +12,7 @@ export default function Detail() {
       >
         ← Back
       </button>
-      <p className="font-mono text-sm text-[var(--muted)]">Detail page — coming soon.</p>
+      <p className="font-mono text-sm text-[var(--muted)]">In Development. Coming soon.</p>
     </div>
   );
 }
