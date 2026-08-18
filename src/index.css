@@ -1,150 +1,135 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
-
-@layer base {
-  :root {
-    /* Portfolio color scheme - Professional blues and purples */
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-
-    --card: 240 10% 6%;
-    --card-foreground: 0 0% 98%;
-
-    --popover: 240 10% 6%;
-    --popover-foreground: 0 0% 98%;
-
-    --primary: 220 90% 56%;
-    --primary-foreground: 0 0% 98%;
-
-    --secondary: 240 4.8% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-
-    --muted: 240 4.8% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-
-    --accent: 270 95% 75%;
-    --accent-foreground: 240 10% 3.9%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 220 90% 56%;
-
-    /* Portfolio-specific design tokens */
-    --gradient-primary: linear-gradient(135deg, hsl(220 90% 56%), hsl(270 95% 75%));
-    --gradient-card: linear-gradient(145deg, hsl(240 10% 6%), hsl(240 5% 11%));
-    --gradient-hero: linear-gradient(180deg, hsl(240 10% 3.9%) 0%, hsl(240 15% 9%) 100%);
-    
-    --shadow-glow: 0 0 50px hsl(220 90% 56% / 0.3);
-    --shadow-card: 0 8px 32px hsl(0 0% 0% / 0.4);
-    --shadow-hero: 0 25px 50px hsl(0 0% 0% / 0.5);
-
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-
-    --radius: 0.5rem;
-
-    /* Typography - Enhanced for readability */
-    --font-heading: 'Cal Sans', 'Inter', system-ui, sans-serif;
-    --font-body: 'Inter', system-ui, sans-serif;
-    
-    /* Reading-optimized text properties */
-    --text-reading-line-height: 1.7;
-    --text-heading-line-height: 1.3;
-    --text-optimal-width: 65ch;
-    --text-section-spacing: 2rem;
-
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
+:root {
+  --bg: #f4f6f7;
+  --panel: #ffffff;
+  --text: #10161a;
+  --muted: #5d6b73;
+  --line: rgba(16, 22, 26, 0.1);
+  --grid: rgba(16, 22, 26, 0.055);
+  --chip: #f0f3f5;
+  --accent: oklch(0.62 0.13 225);
+  --accent-text: oklch(0.44 0.1 225);
+  --accent-soft: oklch(0.95 0.03 225);
+  --shadow: rgba(16, 22, 26, 0.08);
+  --nav-bg: rgba(255, 255, 255, 0.82);
+  --indicator: #10161a;
+  --slot: linear-gradient(#eef2f4, #e4eaee);
+  --stripe: rgba(16, 22, 26, 0.05);
+  --warn: oklch(0.62 0.16 70);
+  --warn-text: oklch(0.44 0.14 70);
+  --warn-soft: oklch(0.95 0.04 70);
 }
 
+[data-theme="dark"] {
+  --bg: #0e1418;
+  --panel: #151d22;
+  --text: #e9eef1;
+  --muted: #93a3ac;
+  --line: rgba(233, 238, 241, 0.13);
+  --grid: rgba(233, 238, 241, 0.05);
+  --chip: rgba(233, 238, 241, 0.06);
+  --accent: oklch(0.76 0.12 225);
+  --accent-text: oklch(0.8 0.1 225);
+  --accent-soft: rgba(120, 190, 225, 0.13);
+  --shadow: rgba(0, 0, 0, 0.45);
+  --nav-bg: rgba(21, 29, 34, 0.86);
+  --indicator: oklch(0.76 0.12 225);
+  --slot: linear-gradient(#1b242a, #151d22);
+  --stripe: rgba(233, 238, 241, 0.055);
+  --warn: oklch(0.78 0.15 70);
+  --warn-text: oklch(0.8 0.13 70);
+  --warn-soft: rgba(230, 170, 90, 0.15);
+}
+
+/* Layered (rather than plain global rules) so these lose to Tailwind
+   utility classes on the same element instead of always winning outright —
+   unlayered CSS beats @layer utilities regardless of specificity. */
 @layer base {
-  * {
-    @apply border-border;
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    overflow-anchor: none;
   }
 
   body {
-    @apply bg-background text-foreground;
-    font-family: var(--font-body);
-    line-height: var(--text-reading-line-height);
-    font-size: 16px;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    transition:
+      background 0.5s ease,
+      color 0.5s ease;
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-heading);
-    font-weight: 700;
-    line-height: var(--text-heading-line-height);
-    letter-spacing: -0.025em;
+  a {
+    color: inherit;
+    text-decoration: none;
   }
 
-  /* Improved readability utilities */
-  .prose {
-    max-width: var(--text-optimal-width);
-    line-height: var(--text-reading-line-height);
+  * {
+    box-sizing: border-box;
   }
 
-  .section-spacing {
-    margin-bottom: var(--text-section-spacing);
+  input,
+  textarea {
+    font-family: inherit;
+  }
+}
+
+::selection {
+  background: oklch(0.85 0.09 225);
+}
+
+@keyframes pageIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+@keyframes drift {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(6px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
   }
 }

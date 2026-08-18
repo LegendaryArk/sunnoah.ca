@@ -1,118 +1,185 @@
-import { Button } from "@/components/ui/button";
-import { ArrowDown, Github, Linkedin, Mail, FileText } from "lucide-react";
-import heroBackground from "@/assets/hero-background.jpg";
+import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSectionJump } from "../hooks/useSectionJump";
+import { CONTACT_LINKS, LOCATION } from "../data/profile";
 
-const Hero = () => {
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    element?.scrollIntoView({ behavior: "smooth" });
+export default function Hero() {
+  const navigate = useNavigate();
+  const jump = useSectionJump();
+  const movesRef = useRef<HTMLSpanElement>(null);
+
+  // While the intro is about to play, this terminal stays hidden — the
+  // loading screen's own terminal card docks into this exact spot and
+  // reveals it the instant its zoom finishes, so there's never a frame
+  // with both terminals visible at once.
+  const introPending = !sessionStorage.getItem("intro-played");
+
+  // A CSS transition can't pick up where a :hover-triggered animation left
+  // off — per spec its "before" value ignores the animation's contribution,
+  // so removing the animation just snaps to rest instead of easing there.
+  // Capturing the live transform and transitioning from that explicit value
+  // sidesteps it.
+  const startDrift = () => {
+    const el = movesRef.current;
+    if (!el) return;
+    el.style.transition = "none";
+    el.style.animation = "drift .8s ease-in-out infinite";
+  };
+
+  const stopDrift = () => {
+    const el = movesRef.current;
+    if (!el) return;
+    const current = getComputedStyle(el).transform;
+    el.style.animation = "none";
+    el.style.transform = current === "none" ? "translateX(0)" : current;
+    void el.offsetWidth;
+    el.style.transition = "transform .3s ease";
+    el.style.transform = "translateX(0)";
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background with overlay */}
+    <div
+      id="sec-top"
+      data-vanish="1"
+      className="relative overflow-hidden pt-[104px] pb-24 min-h-[78vh]"
+    >
       <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${heroBackground})` }}
+        data-par="0.16"
+        className="pointer-events-none absolute -inset-[18%] bg-[length:64px_64px]"
+        style={{
+          backgroundImage:
+            "linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px)",
+          maskImage: "radial-gradient(ellipse 62% 58% at 28% 22%,#000,transparent)",
+        }}
       />
-      <div className="absolute inset-0 bg-gradient-hero opacity-90" />
-      <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-background pointer-events-none" />
 
-      {/* Content */}
-      <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
-        <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-primary bg-clip-text text-transparent animate-in slide-in-from-bottom-4 duration-1000">
+      <div className="relative mx-auto max-w-[1140px] px-10">
+        <div
+          data-reveal="0"
+          className="mb-[34px] flex items-center gap-4 opacity-0 [transition:opacity_.9s_cubic-bezier(.2,.7,.2,1),transform_.9s_cubic-bezier(.2,.7,.2,1)]"
+          style={{ transform: "translateY(20px)" }}
+        >
+          <div
+            className="inline-flex items-center gap-[9px] rounded-full bg-[var(--accent-soft)] px-[13px] py-[6px] font-mono text-[10.5px] font-medium tracking-[.11em] text-[var(--accent-text)]"
+            style={{ transition: "background-color .5s ease, color .5s ease" }}
+          >
+            <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent)] [animation:pulse_2.4s_ease-in-out_infinite]" />
+            OPEN TO SUMMER 2027 INTERNSHIPS
+          </div>
+          <div className="font-mono text-[10.5px] tracking-[.14em] text-[var(--muted)]">
+            {LOCATION}
+          </div>
+        </div>
+
+        <h1
+          data-reveal="1"
+          data-tween="scale"
+          className="m-0 max-w-[17ch] text-[96px] leading-[0.99] font-normal tracking-[-.048em] opacity-0 [transition:opacity_.95s_cubic-bezier(.2,.7,.2,1),transform_.95s_cubic-bezier(.2,.7,.2,1)]"
+          style={{ transform: "translateY(22px)" }}
+        >
           Noah Sun
         </h1>
 
-        <p className="text-xl md:text-2xl text-muted-foreground mb-6 animate-in slide-in-from-bottom-4 duration-1000 delay-200 tracking-wide">
-          Mechatronics Engineering Student at University of Waterloo
+        <p
+          data-reveal="2"
+          className="m-0 mt-5 max-w-[42ch] text-[30px] leading-[1.5] font-light text-[var(--muted)] opacity-0 [transition:opacity_.9s_ease,transform_.9s_ease] [text-wrap:pretty]"
+          style={{ transform: "translateY(20px)" }}
+        >
+          Building software: some of it ships,{" "}
+          <span className="text-[var(--accent)]">
+            some of it{" "}
+            <span
+              ref={movesRef}
+              onMouseEnter={startDrift}
+              onMouseLeave={stopDrift}
+              onTransitionEnd={() => {
+                const el = movesRef.current;
+                if (el) {
+                  el.style.transition = "";
+                  el.style.transform = "";
+                }
+              }}
+              className="inline-block [will-change:transform]"
+            >
+              moves
+            </span>
+          </span>
+          .
         </p>
 
-        {/* Action buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8 animate-in slide-in-from-bottom-4 duration-1000 delay-500">
-          <Button
-            variant="hero"
-            size="lg"
-            onClick={() => scrollToSection("projects")}
-          >
-            View My Work
-          </Button>
-          <Button
-            variant="glass"
-            size="lg"
-            onClick={() => scrollToSection("contact")}
-          >
-            Get In Touch
-          </Button>
-        </div>
-
-        {/* Social links */}
-        <div className="flex justify-center gap-6 mb-8 animate-in slide-in-from-bottom-4 duration-1000 delay-700">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-muted-foreground hover:text-primary transition-colors"
-            onClick={() =>
-              window.open(
-                "https://github.com/LegendaryArk",
-                "_blank",
-                "noopener,noreferrer"
-              )
-            }
-          >
-            <Github className="h-5 w-5" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-muted-foreground hover:text-primary transition-colors"
-            onClick={() =>
-              window.open(
-                "https://www.linkedin.com/in/sunnoah",
-                "_blank",
-                "noopener,noreferrer"
-              )
-            }
-          >
-            <Linkedin className="h-5 w-5" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-muted-foreground hover:text-primary transition-colors"
-            onClick={() => window.open("mailto:nn2sun@uwaterloo.ca")}
-          >
-            <Mail className="h-5 w-5" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-muted-foreground hover:text-primary transition-colors"
-            onClick={() =>
-              document.getElementById("resume")?.scrollIntoView({ behavior: "smooth" })
-            }
-          >
-            <FileText className="h-5 w-5" />
-          </Button>
-        </div>
-
-        {/* Scroll indicator */}
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => scrollToSection("about")}
-          className="animate-bounce text-muted-foreground hover:text-primary transition-colors"
+        <div
+          data-reveal="3"
+          className="mt-14 grid grid-cols-[1fr_300px] gap-11 border-t border-[var(--line)] pt-7 opacity-0 [transition:opacity_.9s_ease,transform_.9s_ease]"
+          style={{ transform: "translateY(20px)" }}
         >
-          <ArrowDown className="h-5 w-5" />
-        </Button>
+          <div
+            id="hero-terminal"
+            style={introPending ? { opacity: 0 } : undefined}
+            className="overflow-hidden rounded-xl border border-[var(--line)] bg-[var(--panel)] [transition:background-color_.5s_ease,border-color_.5s_ease]"
+          >
+            <div className="flex items-center gap-[7px] border-b border-[var(--line)] px-4 py-[10px] [transition:border-color_.5s_ease]">
+              <span className="h-[9px] w-[9px] rounded-full bg-[var(--line)]" />
+              <span className="h-[9px] w-[9px] rounded-full bg-[var(--line)]" />
+              <span className="h-[9px] w-[9px] rounded-full bg-[var(--line)]" />
+              <span className="ml-2 font-mono text-[10.5px] tracking-[.08em] text-[var(--muted)]">
+                status.sh
+              </span>
+            </div>
+            <div className="px-5 py-[18px] font-mono text-[13px] leading-[1.9]">
+              <div className="text-[var(--muted)]">
+                <span className="text-[var(--accent)]">noah@uwaterloo</span>:~$ whoami --now
+              </div>
+              <div>→ Mechatronics Engineering &rsquo;30, University of Waterloo</div>
+              <div>→ Full Stack Software Engineer, Thames Valley Financial Inc.</div>
+              <div>→ Embedded Flight Software Developer, Waterloo Aerial Robotics Group</div>
+              <div className="mt-3 text-[var(--muted)]">
+                <span className="text-[var(--accent)]">noah@uwaterloo</span>:~$ whoami --before
+              </div>
+              <div>→ Forward Deployed Engineer, Ascendance Foundry</div>
+              <div>→ 5× VEX Robotics World Championship, team captain & programming lead</div>
+              <div>→ Flutter app used by 3,500+ competitors, Elapse</div>
+              <div className="mt-3 flex items-center gap-1.5 text-[var(--muted)]">
+                <span className="text-[var(--accent)]">noah@uwaterloo</span>:~$
+                <span className="inline-block h-[13px] w-[7px] bg-[var(--muted)] [animation:pulse_1.1s_step-end_infinite]" />
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-col justify-center gap-[10px]">
+            <button
+              type="button"
+              onClick={() => navigate("/projects")}
+              className="flex cursor-pointer justify-between rounded-[9px] bg-[var(--accent)] px-5 py-[13px] text-[13.5px] font-medium text-white [transition:transform_.25s_ease-out,background-color_.5s_ease] hover:-translate-y-0.5"
+            >
+              Browse projects<span>→</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => jump("resume")}
+              className="flex cursor-pointer justify-between rounded-[9px] border border-[var(--line)] bg-[var(--panel)] px-5 py-[13px] text-[13.5px] font-medium [transition:transform_.25s_ease-out,background-color_.5s_ease,border-color_.5s_ease] hover:-translate-y-0.5"
+            >
+              Résumé<span>↓</span>
+            </button>
+
+            <div className="mt-5 border-t border-[var(--line)] pt-4">
+              <div className="mb-1.5 font-mono text-[10px] tracking-[.14em] text-[var(--muted)]">
+                CONNECT WITH ME
+              </div>
+              {CONTACT_LINKS.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  target={link.href.startsWith("http") ? "_blank" : undefined}
+                  rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                  className="flex cursor-pointer justify-between border-b border-[var(--line)] py-[9px] text-[12.5px] [transition:border-color_.5s_ease] last:border-b-0"
+                >
+                  {link.label}
+                  <span className="text-[var(--accent)]">↗</span>
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
-
-      {/* Decorative elements */}
-      <div className="absolute top-20 left-20 w-2 h-2 bg-primary rounded-full animate-pulse" />
-      <div className="absolute bottom-40 right-20 w-3 h-3 bg-accent rounded-full animate-pulse delay-1000" />
-      <div className="absolute top-1/3 right-1/4 w-1 h-1 bg-primary rounded-full animate-pulse delay-500" />
-    </section>
+    </div>
   );
-};
-
-export default Hero;
+}

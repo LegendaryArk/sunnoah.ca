@@ -1,0 +1,70 @@
+import { COURSES, EDUCATION } from "../data/education";
+
+export default function Education() {
+  return (
+    <div id="sec-education" className="mx-auto max-w-[1140px] px-10 pt-[88px] pb-24">
+      <div
+        data-reveal="0"
+        className="mb-8 opacity-0 [transition:opacity_.9s_ease,transform_.9s_ease]"
+        style={{ transform: "translateY(20px)" }}
+      >
+        <div className="mb-3.5 font-mono text-[11px] tracking-[.18em] text-[var(--muted)]">
+          03 — EDUCATION
+        </div>
+        <h2 className="m-0 text-[40px] font-normal tracking-[-.038em]">Study</h2>
+      </div>
+
+      <div
+        data-reveal="1"
+        className="rounded-2xl border border-[var(--line)] bg-[var(--panel)] px-[34px] py-8 opacity-0 shadow-[0_10px_34px_var(--shadow)]"
+        style={{
+          transform: "translateY(22px)",
+          transition: "opacity .9s ease, transform .9s ease, background-color .5s ease, border-color .5s ease",
+        }}
+      >
+        <div className="grid grid-cols-[1fr_240px] items-start gap-10">
+          <div>
+            <div className="mb-3 font-mono text-[11px] tracking-[.12em] text-[var(--muted)]">
+              {EDUCATION.dates}
+            </div>
+            <div className="mb-2 text-[30px] font-medium tracking-[-.03em]">{EDUCATION.school}</div>
+            <div className="mb-[26px] text-[16.5px] font-light text-[var(--muted)]">
+              {EDUCATION.program}
+            </div>
+            <div className="mb-[11px] font-mono text-[10.5px] tracking-[.13em] text-[var(--muted)]">
+              RELEVANT COURSEWORK
+            </div>
+            <div className="flex flex-wrap gap-[7px]">
+              {COURSES.map((c) => (
+                <div key={c.code} className="group relative">
+                  <a
+                    href={c.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block rounded-[7px] border border-[var(--line)] bg-[var(--chip)] px-[11px] py-[6px] font-mono text-[11.5px] [transition:transform_.2s_ease-out,background-color_.5s_ease,border-color_.5s_ease] hover:-translate-y-0.5"
+                  >
+                    {c.name}
+                  </a>
+                  <div
+                    role="tooltip"
+                    className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 w-max max-w-[220px] -translate-x-1/2 translate-y-1 rounded-lg border border-[var(--line)] bg-[var(--panel)] px-3 py-2 text-[12px] leading-[1.5] font-light text-[var(--text)] opacity-0 shadow-[0_10px_28px_var(--shadow)] transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100"
+                  >
+                    {c.desc}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="border-l border-[var(--line)] pl-7">
+            <div className="text-[52px] leading-none font-extralight tracking-[-.04em] text-[var(--accent)]">
+              {EDUCATION.gpa}
+            </div>
+            <div className="mt-2 font-mono text-[10.5px] tracking-[.13em] text-[var(--muted)]">
+              {EDUCATION.gpaScale}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

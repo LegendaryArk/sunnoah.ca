@@ -1,84 +1,47 @@
-# Noah Sun Portfolio Website
+# sunnoah.ca
 
-This repository contains my personal portfolio website, built to showcase:
+Personal portfolio site for Noah Sun, built with React, TypeScript, and Tailwind CSS. Deployed on GitHub Pages at [sunnoah.ca](https://sunnoah.ca).
 
-- Projects (software, robotics, and engineering work)
-- Resume
-- Contact information
+## Stack
 
-The site is built with React, TypeScript, Vite, Tailwind CSS, and shadcn/ui components.
+- **Frontend:** React 19 + React Router, Vite, Tailwind CSS 4, TypeScript
+- **Contact form backend:** Cloudflare Worker (`worker/`) that validates submissions and sends email via [Resend](https://resend.com)
 
-## Tech Stack
+## Project structure
 
-- React 18
-- TypeScript
-- Vite
-- Tailwind CSS
-- shadcn/ui + Radix UI
-- React Router
+```
+src/
+  components/   UI sections (Hero, Experience, Projects, Contact, ...)
+  pages/        Route-level views (Home, Projects, Detail)
+  data/         Content — profile info, experience, projects, education, skills
+  hooks/        Shared React hooks
+  lib/          Utilities
+worker/         Cloudflare Worker for the contact form's email backend
+```
 
-## Local Development
-
-### 1. Install dependencies
+## Development
 
 ```bash
 npm install
+npm run dev       # start the Vite dev server
+npm run build      # type-check and build for production
+npm run lint       # run oxlint
+npm run preview    # preview the production build locally
 ```
 
-### 2. Start dev server
+To work on the contact form backend locally:
 
 ```bash
-npm run dev
-```
-
-Vite will print a local URL (usually http://localhost:5173).
-
-## Build and Preview
-
-Create a production build:
-
-```bash
-npm run build
-```
-
-Preview the built site locally:
-
-```bash
-npm run preview
+cd worker
+npm install
+npm run dev        # run the worker locally with wrangler
 ```
 
 ## Deployment
 
-This project is configured for GitHub Pages deployment.
-
-Deploy command:
+The frontend is built and published to GitHub Pages. The contact form worker is deployed separately to Cloudflare with:
 
 ```bash
+cd worker
 npm run deploy
 ```
-
-How it works:
-
-- predeploy runs npm run build
-- deploy publishes the dist folder to the gh-pages branch
-
-## Useful Scripts
-
-- npm run dev: start local development server
-- npm run build: production build
-- npm run build:dev: development-mode build
-- npm run lint: run ESLint
-- npm run preview: preview production build locally
-- npm run deploy: build + publish to GitHub Pages
-
-## Project Structure
-
-- src/components: page sections (Hero, About, Projects, Resume, Contact, Footer)
-- src/components/ui: reusable UI primitives
-- src/pages: route pages (Index, NotFound)
-- public: static assets
-
-## Notes
-
-- Resume preview is embedded in-page and also available as a direct PDF link.
-- This site is actively updated as I complete new projects and competitions.
