@@ -25,7 +25,7 @@ const STEPS: Step[] = [
     accentUser: false,
     command: "ssh noah@uwaterloo",
     output: ["→ Connecting...", "→ Authenticating...", "→ Welcome, noah."],
-    extraPause: { 0: 400, 1: 600 },
+    extraPause: { 0: 200, 1: 400 },
   },
   {
     user: "noah@uwaterloo",
