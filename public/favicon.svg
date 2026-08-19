@@ -1,0 +1,23 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+<style>
+	.bg-shape { fill: #000000; }
+	
+	@media (prefers-color-scheme: dark) {
+		.bg-shape { fill: #FFFFFF; }
+	}
+</style>
+<g clip-path="url(#clip0_1_2)">
+<path class="bg-shape" d="M0 80C0 35.8172 35.8172 0 80 0H432C476.183 0 512 35.8172 512 80V432C512 476.183 476.183 512 432 512H80C35.8172 512 0 476.183 0 432V80Z"/>
+<line x1="220.5" y1="96.5" x2="220.5" y2="374.5" stroke="#2F7FA8" stroke-opacity="0.42" stroke-width="45" stroke-linecap="round"/>
+<line x1="95.5" y1="96.5" x2="95.5" y2="415.5" stroke="#2F7FA8" stroke-width="45" stroke-linecap="round"/>
+<line x1="97.6604" y1="95.3815" x2="220.522" y2="374.34" stroke="#2F7FA8" stroke-width="45" stroke-linecap="round"/>
+<path d="M462.5 437.688H427.5V313L462.5 278V437.688Z" fill="#2F7FA8"/>
+<path d="M462 438H302L337 403H462V438Z" fill="#2F7FA8"/>
+<path d="M397 158.487C397 96 337.912 96 333.516 96C329.121 96 274 96 274 158.487C274 274 397 194 397 307.654C397 374 337.912 374 333.516 374C329.121 374 274 374 274 307.654" stroke="#2F7FA8" stroke-width="45" stroke-linecap="round"/>
+</g>
+<defs>
+<clipPath id="clip0_1_2">
+<rect width="512" height="512" fill="white"/>
+</clipPath>
+</defs>
+</svg>
