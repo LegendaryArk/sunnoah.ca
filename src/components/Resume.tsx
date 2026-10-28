@@ -65,7 +65,7 @@ export default function Resume() {
           <div className="mb-3.5 font-mono text-[11px] tracking-[.18em] text-[var(--muted)]">
             04 — RÉSUMÉ
           </div>
-          <h2 className="m-0 mb-3 text-[40px] font-normal tracking-[-.038em]">Two résumés</h2>
+          <h2 className="m-0 mb-3 text-[40px] font-normal tracking-[-.038em]">Three résumés</h2>
           <p className="m-0 max-w-[56ch] text-base leading-[1.7] font-light text-[var(--muted)] [text-wrap:pretty]">
             Same background, different emphasis. Pick the one that matches the role you&rsquo;re
             hiring for.

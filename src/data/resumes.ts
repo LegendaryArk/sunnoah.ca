@@ -11,8 +11,8 @@ export interface ResumeVariant {
 export const RESUMES: ResumeVariant[] = [
   {
     id: "robotics",
-    tab: "ROBOTICS / EMBEDDED",
-    title: "Robotics & Embedded",
+    tab: "ROBOTICS",
+    title: "Robotics",
     file: "noah_sun_resume_robotics.pdf",
     src: "/resumes/noah_sun_resume_robotics.pdf",
     note: "Leads with multi-robot coordination, LiDAR navigation, and firmware. Best fit for robotics and hardware teams.",
@@ -20,6 +20,19 @@ export const RESUMES: ResumeVariant[] = [
       ["LEADS WITH", "AutoFleet · Nav stack"],
       ["HARDWARE", "STM32, Pico, Jetson"],
       ["CONTROLS", "ROS2, RTOS, PID, Kinematics"],
+    ],
+  },
+  {
+    id: "embedded",
+    tab: "EMBEDDED",
+    title: "Embedded & Firmware",
+    file: "noah_sun_resume_embedded.pdf",
+    src: "/resumes/noah_sun_resume_embedded.pdf",
+    note: "Leads with flight software, flash drivers, and RTOS work on microcontrollers. Best fit for embedded and firmware teams.",
+    highlights: [
+      ["LEADS WITH", "WARG · Flash driver"],
+      ["HARDWARE", "STM32, Pico, Jetson"],
+      ["FIRMWARE", "C/C++, RTOS, FTL"],
     ],
   },
   {
